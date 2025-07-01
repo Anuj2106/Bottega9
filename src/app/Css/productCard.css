@@ -1,0 +1,17 @@
+.product-card {
+    overflow-x: auto !important; 
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;     /* Firefox */
+  }
+  
+  .product-card::-webkit-scrollbar {
+    display: none;             /* Chrome, Safari, Opera */
+  }
+  .desktop-product-card{
+    max-width: 18rem;
+  }
+  .mobile-product-card{
+    max-width: 16rem;
+  }
+
+  

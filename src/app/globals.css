@@ -1,0 +1,40 @@
+:root{
+ 
+--backgound-color:#FAF5EF;
+--link-color:#1C1C1C;
+--link-hover-color:#BFA125;
+--secondary-background-color:#F5F5DC;
+--primary-text-color:#2E2E2E;
+--button-color:#A3B18A;
+--button-hover-color:#BFA125;
+--border-color:#D9D6CF;
+--tittle-color:#5C4033;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--backgound-color) !important;
+  box-sizing: border-box;
+}
+ /* universal container - using for layout width for max size  */
+  .universal-container{
+   
+    padding: 0px;
+    margin: 0px auto;
+    box-sizing: border-box;
+    max-width: 1440px;
+  }
+
+.primary-text{
+  color: var(--primary-text-color) !important;
+}
+.btn{
+  background-color: var(--button-color) !important;
+  color: var(--link-color) !important;
+}
+/*  For adding the smooth animation for mobile  */
+
+
+
+

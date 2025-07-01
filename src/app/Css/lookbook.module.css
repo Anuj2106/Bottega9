@@ -1,0 +1,28 @@
+ .lookbook-image {
+          transition: transform 0.4s ease;
+          object-fit: cover;
+          height: 100% !important;
+          min-height: 400px !important;
+          max-height:600px  !important; ;
+        }
+        .lookbook-image:hover {
+          transform: scale(1.02);
+        }
+
+        @media (max-width: 767.98px) {
+          .overlay-content {
+            position: static !important;
+            transform: none !important;
+            margin-top: 1.5rem;
+          }
+        }
+
+        @media (max-width: 575.98px) {
+          .display-6 {
+            font-size: 1.6rem;
+          }
+
+          .btn {
+            font-size: 0.875rem;
+            padding: 0.4rem 1rem;
+          }}
