@@ -13,5 +13,28 @@
   .mobile-product-card{
     max-width: 16rem;
   }
+/* carouselIndicators.css */
+
+.carousel-indicators {
+  bottom: 10px;
+}
+
+.carousel-indicators button {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: #999;
+  opacity: 0.5;
+  border: none;
+  margin: 0 4px;
+  transition: opacity 0.3s ease, background-color 0.3s ease;
+}
+
+.carousel-indicators .active {
+  background-color: #fff;
+  opacity: 1;
+}
+
+
 
   

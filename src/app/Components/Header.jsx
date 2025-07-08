@@ -1,13 +1,16 @@
 "use client";
 import { ChevronDown } from 'lucide-react';
 import { useState } from 'react';
-import { ShoppingCart ,User} from 'lucide-react';
+import { ShoppingCart ,User ,Search} from 'lucide-react';
 import "../Css/header.module.css"
 
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
+  console.log(isOpen);
+  
   return (
     <>
+   
     {/* Desktop  header for devices greater than 768px  */}
 <section className='desktop-header container bg-light  sticky-top z-3 d-lg-block d-md-none d-sm-none d-none'>
 
@@ -15,27 +18,31 @@ const Header = () => {
     <div className="container d-flex justify-content-between align-items-center">
       {/* Brand on the left */}
       <a className="navbar-brand fw-bold fs-4 links " href="#">BOTTEGA<sub>9</sub></a>
-      {/* Center nav links (visible on lg and up) */}
-      <ul className="navbar-nav d-none d-lg-flex flex-row gap-3 mx-auto">
-        <li className="nav-item "><a className="nav-link links " href="#">Collections</a></li>
-        <li className="nav-item"><a className="nav-link links " href="#">Services</a></li>
-        <li className="nav-item"><a className="nav-link links " href="#">Our Story</a></li>
-        <li className="nav-item"><a className="nav-link links " href="#">Lookbook</a></li>
-        <li className="nav-item"><a className="nav-link links " href="#">Contact</a></li>
-      </ul>
+
+      {/* Center replaced with search bar */}
+  <form className="d-none d-lg-flex mx-auto w-50 position-relative">
+  <input
+    type="text"
+    className="form-control rounded-pill pe-5"
+    placeholder="Search products..."
+  />
+  <Search
+    size={18}
+    className="position-absolute top-50 end-0  translate-middle-y me-3 text-secondary"
+  />
+</form>
+
+
       {/* Right login and cart */}
       <div className="d-flex align-items-center gap-3">
-        <a href="#" className="btn  text-decoration-none">
-          <User/>
+        <a href="#" className="btn  btn-dark text-decoration-none">
+          <User />
           Log In
-          </a>
-<a href="#" className=" btn ">
-          <ShoppingCart   className='text-dark'/>
+        </a>
+        <a href="#" className="btn btn-dark">
+          <ShoppingCart  />
           <sup>
-
-          <span className=" badge  rounded-circle ">
-            3
-          </span>
+            <span className="badge rounded-circle">3</span>
           </sup>
         </a>
       </div>
@@ -56,8 +63,8 @@ const Header = () => {
     </div>
   </div>
 
-
 </section>
+
 {/* section end here  */}
 {/*   for mobile views  */}
 <section className="mobile-header sticky-top z-3 d-block d-md-block d-lg-none">
@@ -88,35 +95,37 @@ const Header = () => {
 
           {/* Product Dropdown */}
       
- <li className="nav-item">
-      <a
-        className="nav-link d-flex justify-content-between align-items-center"
-        data-bs-toggle="collapse"
-        href="#productAccordionMenu"
-        role="button"
-        aria-expanded={isOpen}
-        onClick={() => setIsOpen(!isOpen)}
-      >
-        Products
-        <ChevronDown
-          size={18}
-          className={`ms-2 transition ${isOpen ? 'rotate-180' : ''}`}
-        />
-      </a>
+<li className="nav-item">
+  <a
+    className="nav-link d-flex justify-content-left align-items-center "
+    data-bs-toggle="collapse"
+    href="#productAccordionMenu"
+    role="button"
+    aria-expanded={isOpen}
+    onClick={() => setIsOpen(!isOpen)}
+    style={{ fontWeight: '500' }}
+  >
+    Products
+    <ChevronDown
+      size={18}
+      className={`transition ${isOpen ? 'rotate-180' : ''}`}
+    />
+  </a>
 
-      <div className="collapse" id="productAccordionMenu">
-        <div className="bg-transparent rounded mt-1 px-2 py-2">
-          <a className="dropdown-item" href="#">All Products</a>
-          <a className="dropdown-item" href="#">New Arrivals</a>
-          <a className="dropdown-item" href="#">Sofas</a>
-          <a className="dropdown-item" href="#">Consoles</a>
-          <a className="dropdown-item" href="#">Dinings</a>
-          <a className="dropdown-item" href="#">Coffee Tables</a>
-          <a className="dropdown-item" href="#">Bed</a>
-          <a className="dropdown-item" href="#">Lounge</a>
-        </div>
-      </div>
-    </li>
+  <div className="collapse " id="productAccordionMenu">
+    <div className="bg-none rounded mt-1 px-3 py-2">
+      <a className="dropdown-item py-2" href="#">All Products</a>
+      <a className="dropdown-item py-2" href="#">New Arrivals</a>
+      <a className="dropdown-item py-2" href="#">Sofas</a>
+      <a className="dropdown-item py-2" href="#">Consoles</a>
+      <a className="dropdown-item py-2" href="#">Dinings</a>
+      <a className="dropdown-item py-2" href="#">Coffee Tables</a>
+      <a className="dropdown-item py-2" href="#">Bed</a>
+      <a className="dropdown-item py-2" href="#">Lounge</a>
+    </div>
+  </div>
+</li>
+
 
 
           <li className="nav-item"><a className="nav-link" href="#">Collections</a></li>

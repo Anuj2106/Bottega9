@@ -4,6 +4,7 @@ import "./globals.css";
 import 'bootstrap/dist/css/bootstrap.min.css'; 
 import { useEffect } from 'react';
 import MobileFooter from "./Components/MobileFotter";
+import Footer from "./Components/Footer";
 // Import CSS (OK here)
 
 
@@ -18,13 +19,14 @@ export default function RootLayout({ children }) {
   }, []);
   return (
     <html lang="en">
-      <title> Bontega9</title>
+      <title> Bottega <sub>9</sub></title>
       <body >
         <div className="universal-container">
 
         {children}
         </div>
         <MobileFooter />
+        <Footer/>
       </body>
     </html>
   );

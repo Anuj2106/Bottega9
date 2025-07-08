@@ -35,7 +35,7 @@ const Lookbook = () => {
           {/* Overlay Content */}
           <div className="overlay-content position-absolute top-50 start-50 translate-middle text-white text-center px-3">
             <h2 className="display-6 display-md-5 fw-semibold fst-italic border-bottom border-white d-inline-block pb-1">
-              Look book<br /><span className="fw-bold">2023.</span>
+              Look book<br /><span className="fw-bold">2025.</span>
             </h2>
             <br />
             <button
