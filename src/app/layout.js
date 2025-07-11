@@ -19,7 +19,7 @@ export default function RootLayout({ children }) {
   }, []);
   return (
     <html lang="en">
-      <title> Bottega <sub>9</sub></title>
+      <title> Bottega</title>
       <body >
         <div className="universal-container">
 

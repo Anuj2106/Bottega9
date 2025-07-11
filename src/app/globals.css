@@ -21,6 +21,7 @@ body {
 
   box-sizing: border-box;
   font-family: var(--font-family) !important ;
+   font-optical-sizing: auto;
 }
  /* universal container - using for layout width for max size  */
   .universal-container{

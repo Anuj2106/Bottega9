@@ -5,6 +5,7 @@ import Hero from "./Components/Hero";
 import ProductCard from "./Components/ProductCard";
 import Lookbook from "./Components/Lookbook";
 import Topnavbar from "./Components/TopNavbar";
+import Testimonials from "./Components/Testimonials";
 
 export default function Home() {
   return (
@@ -21,6 +22,7 @@ export default function Home() {
   <ProductCard />
   <Heading tittle={"Sofas"} subtittle={"See All"}/>
   <ProductCard />
+  <Testimonials/>
    </>
   );
 }
