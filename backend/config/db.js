@@ -1,15 +1,13 @@
-// db.js
+require('dotenv').config();
 const mysql = require('mysql2');
 
-// Create a connection
 const connection = mysql.createConnection({
-  host: 'localhost',     // or your IP if remote
-  user: 'root',          // default MySQL user
-  password: '', // replace with your MySQL root password
-  database: 'bottega', // replace with your DB name
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_NAME,
 });
 
-// Connect to the database
 connection.connect((err) => {
   if (err) {
     console.error('❌ Error connecting to MySQL:', err.message);
