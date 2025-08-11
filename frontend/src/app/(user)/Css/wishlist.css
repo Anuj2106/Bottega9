@@ -1,0 +1,75 @@
+:root {
+  --gold: #C7A76D;
+}
+
+.product-card {
+  border-radius: 12px;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.product-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.12);
+}
+
+.wishlist-img {
+  object-fit: cover;
+  height: 250px;
+  width: 100%;
+}
+
+.product-badge {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background: var(--gold);
+  color: white;
+  font-size: 0.7rem;
+  padding: 4px 8px;
+  border-radius: 50px;
+  font-weight: 500;
+  z-index: 5;
+}
+
+.wishlist-remove-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: white;
+  color: var(--gold);
+  border: none;
+  font-size: 1.2rem;
+  font-weight: bold;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  text-align: center;
+  cursor: pointer;
+  z-index: 10;
+}
+.wishlist-remove-btn:hover {
+  background: var(--gold);
+  color: white;
+}
+
+.color-swatch {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 1px solid #ccc;
+}
+
+.btn-gold {
+  background: var(--gold);
+  color: white;
+  font-weight: 500;
+  border: none;
+}
+.btn-gold:hover {
+  background: #b7955d;
+}
+
+.luxury-empty-state {
+  border: 2px dashed var(--gold);
+  background: #fffbea;
+}

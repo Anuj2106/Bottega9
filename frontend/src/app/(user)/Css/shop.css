@@ -1,0 +1,68 @@
+:root {
+  --gold: #C7A76D;
+}
+
+/* Category Pills */
+.navPillsLink {
+  background: white;
+  border: 1px solid var(--gold);
+  color: var(--gold);
+  padding: 0.4rem 1.2rem;
+  border-radius: 50px;
+  font-weight: 500;
+  margin-right: 0.5rem;
+  white-space: nowrap;
+  transition: all 0.3s;
+}
+.navPillsLink.active,
+.navPillsLink:hover {
+  background: var(--gold);
+  color: white;
+}
+
+/* Filter + Sort Buttons */
+.btnFilter, .btnSortDropdown {
+  background: white;
+  border: 1px solid var(--gold);
+  color: var(--gold);
+  font-weight: 500;
+  padding: 0.45rem 1rem;
+  border-radius: 30px;
+}
+.btnFilter:hover, .btnSortDropdown:hover {
+  background: var(--gold);
+  color: white;
+}
+
+/* Gold brand button */
+.btn-gold {
+  background: var(--gold);
+  color: white;
+  border: none;
+}
+.btn-gold:hover {
+  background: #b7955d;
+}
+
+/* Offcanvas */
+.offcanvas {
+  max-width: 300px;
+}
+
+/* Smooth fade animation */
+.fade-in {
+  animation: fadeIn 0.6s ease-in-out forwards;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px) }
+  to { opacity: 1; transform: translateY(0) }
+}
+
+/* Scrollbar styling for pill nav */
+.gold-scrollbar::-webkit-scrollbar {
+  height: 6px;
+}
+.gold-scrollbar::-webkit-scrollbar-thumb {
+  background-color: var(--gold);
+  border-radius: 4px;
+}

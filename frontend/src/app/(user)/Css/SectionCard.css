@@ -1,0 +1,132 @@
+:root {
+  --brand:black; 
+}
+
+.horizontal-scroll-wrapper {
+  display: flex;
+  gap: 1rem;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  padding-bottom: 10px;
+
+  /* Hide scrollbar but keep scroll functionality */
+  scrollbar-width: none;       /* Firefox */
+  -ms-overflow-style: none;    /* IE/Edge */
+}
+.horizontal-scroll-wrapper::-webkit-scrollbar {
+  display: none;               /* Chrome, Safari */
+}
+
+.horizontal-scroll-wrapper::-webkit-scrollbar-thumb {
+  background-color: var(--brand);
+  border-radius: 4px;
+}
+
+
+/* Card */
+.section-product-card {
+  min-width: 230px;
+   max-width:300px;
+  border-radius: 8px;
+  overflow: hidden;
+  scroll-snap-align: start;
+  background: white;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.section-product-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+}
+
+/* Image */
+.image-container {
+  position: relative;
+  overflow: hidden;
+}
+.product-img {
+  width: 100%;
+  height: 250px;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+.section-product-card:hover .product-img {
+  transform: scale(1.05);
+}
+
+/* Badge */
+.product-badge {
+  background: var(--brand);
+  color: white;
+  font-size: 0.7rem;
+  padding: 4px 8px;
+  border-radius: 50px;
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  z-index: 2;
+}
+
+/* Wishlist */
+.wishlist-btn {
+  background: white;
+  border: 1px solid var(--brand);
+  border-radius: 50%;
+  padding: 4px;
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  z-index: 2;
+  transition: background 0.3s;
+}
+.wishlist-btn:hover {
+  background: var(--brand);
+}
+.wishlist-btn:hover svg {
+  color: white;
+}
+
+/* Hover Add-to-Cart */
+.hover-actions {
+  position: absolute;
+  bottom: 10px;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.section-product-card:hover .hover-actions {
+  opacity: 1;
+}
+
+.btn-brand {
+  background: var(--brand);
+  color: white;
+  border: none;
+}
+.btn-brand:hover {
+  background: #b7955d;
+}
+
+/* Price */
+.price-new {
+  font-weight: 600;
+  font-size: 1rem;
+}
+.price-old {
+  font-size: 0.85rem;
+  color: #888;
+  text-decoration: line-through;
+  margin-left: 4px;
+}
+
+/* Text */
+.product-name {
+  font-size: 1rem;
+  font-weight: 600;
+}
+.product-desc {
+  font-size: 0.85rem;
+  color: #666;
+}

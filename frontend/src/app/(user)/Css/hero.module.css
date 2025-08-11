@@ -1,0 +1,93 @@
+.heroContainer {
+  position: relative;
+  width: 100%;
+  height: 80vh;
+  overflow: hidden;
+}
+
+.heroVideo {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  height: 80vh;
+  transform: translate(-50%, -50%);
+  object-fit: cover;
+  z-index: -1;
+}
+
+/* Optional: Make video height smaller on mobile */
+@media (max-width: 768px) {
+  .heroVideo {
+    height: 70vh;
+  }
+
+  .heroContainer {
+    height: 70vh;
+    width: 100%;
+  }
+}
+
+/* 📱 Small devices (e.g., 600px wide) */
+@media (max-width: 568px) {
+  .heroVideo {
+    height: 60vh; /* smaller height for small screens */
+  }
+
+  .heroContainer {
+    height: 60vh;
+    width: 92%;
+
+  }
+
+  .logoImg {
+    max-width: 120px; /* reduce logo size for small screens */
+  }
+
+  .heroContent h1 {
+    font-size: 1.5rem; /* smaller heading for small screens */
+  }
+
+  .heroContent p {
+    font-size: 1rem; /* smaller text for small screens */
+  }
+}
+/* 📱 Extra-small devices (e.g., 315px wide) */
+@media (max-width: 315px) {
+  .heroVideo {
+    height: 50vh; /* even smaller height for tiny screens */
+  }
+
+  .heroContainer {
+    height: 50vh;
+  }
+
+  .logoImg {
+    max-width: 100px; /* reduce logo size */
+  }
+
+  .heroContent h1 {
+    font-size: 1.25rem; /* smaller heading */
+  }
+
+  .heroContent p {
+    font-size: 0.875rem; /* smaller text */
+  }
+}
+
+
+.heroContent {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  color: white;
+  z-index: 2;
+}
+
+.logoImg {
+  max-width: 150px;
+  margin-bottom: 1rem;
+}
+

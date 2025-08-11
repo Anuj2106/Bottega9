@@ -1,0 +1,32 @@
+:root {
+  --gold: #C7A76D;
+}
+
+.contact-info-card {
+  background: #fffbea;
+  border-left: 4px solid var(--gold);
+  padding: 1rem;
+  border-radius: 6px;
+  margin-bottom: 1rem;
+}
+.contact-info-card h5 {
+  margin-top: 0.5rem;
+  font-size: 1.1rem;
+}
+.icon-gold {
+  color: var(--gold);
+  width: 24px;
+  height: 24px;
+}
+
+.contact-form .btn-gold {
+  background: var(--gold);
+  color: white;
+}
+.contact-form .btn-gold:hover {
+  background: #b7955d;
+}
+
+.map-section {
+  margin-top: 3rem;
+}

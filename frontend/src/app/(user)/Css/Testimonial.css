@@ -1,0 +1,36 @@
+/* Remove scrollbar visuals but keep scroll functionality */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+/* Card hover effect */
+.testimonial-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.testimonial-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+}
+
+/* Circular image wrapper */
+.profile-image-wrapper {
+  width: 90px;
+  height: 90px;
+  overflow: hidden;
+}
+
+/* Fade for video switch */
+.video-wrapper {
+  opacity: 1;
+  transition: opacity 0.4s ease;
+}
+.fade-in {
+  opacity: 1;
+}
+.fade-out {
+  opacity: 0;
+}
