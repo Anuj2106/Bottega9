@@ -1,19 +1,4 @@
-:root {
-  --gold: #C7A76D;
-}
 
-/* HERO */
-.hero-banner {
-  background: url('/images/collections-hero.jpg') center/cover no-repeat;
-  min-height: 50vh;
-  position: relative;
-}
-.hero-banner::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: rgba(0,0,0,0.55);
-}
 
 /* FILTER BUTTONS */
 .btn-filter {

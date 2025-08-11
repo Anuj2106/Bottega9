@@ -1,6 +1,7 @@
 'use client';
 import {useState, useEffect } from 'react';
 import { Home, Plus, Share2, Download ,Edit, Trash2 } from 'lucide-react';
+const apiUrl = process.env.NEXT_PUBLIC_BACKEND_LINK;
 
 import axios from 'axios';
 const ProductImages = () => {
@@ -10,7 +11,7 @@ const ProductImages = () => {
     useEffect(() => {
         const fetchProductImages = async () => {
             try {
-                const response = await axios.get('http://localhost:3001/api/product-image', {
+                const response = await axios.get(`${apiUrl}/api/product-image`, {
                     withCredentials: true, // Include cookies for session management
                 });
                 console.log('Product Images:', response.data);
@@ -92,7 +93,7 @@ const ProductImages = () => {
             <img
               className="img-fluid"
               key={i}
-              src={`http://localhost:3001/uploads/product_images/${imageFile}`}
+              src={`${apiUrl}/uploads/product_images/${imageFile}`}
               alt={`Product ${i + 1}`}
              
               

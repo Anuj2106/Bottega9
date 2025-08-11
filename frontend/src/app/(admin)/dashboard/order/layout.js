@@ -2,6 +2,8 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Home, Plus, Share2, Download ,Edit, Trash2 } from 'lucide-react';
+const apiUrl = process.env.NEXT_PUBLIC_BACKEND_LINK;
+
 
 const Order = () => {
     const [openDropdownId, setOpenDropdownId] = useState(null);
@@ -10,7 +12,7 @@ const Order = () => {
     useEffect(() => {
         const fetchOrders = async () => {
             try {
-                const response = await axios.get('http://localhost:3001/api/orders', {
+                const response = await axios.get(`${apiUrl}/api/orders`, {
                     withCredentials: true, // Include cookies for session management
                 });
                 console.log('Orders:', response.data);
@@ -24,7 +26,7 @@ const Order = () => {
     }, []);
     const handleStatusChange = async (orderId, newStatus) => {
   try {
-    const res = await axios.put(`http://localhost:3001/api/orders/${orderId}/status`, {
+    const res = await axios.put(`${apiUrl}/api/orders/${orderId}/status`, {
       order_status: newStatus,
     });
 

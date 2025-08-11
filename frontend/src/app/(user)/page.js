@@ -2,7 +2,7 @@
 import Hero from './Components/Hero';
 import Highlights from './Components/Highilights';
 import Heading from './Components/Heading';
-import ProductCard from './Components/SectionCard';
+import SectionCard from './Components/SectionCard';
 import Lookbook from './Components/Lookbook';
 import Testimonials from './Components/Testimonials';
 
@@ -21,14 +21,14 @@ export default function HomePage() {
       <Hero Page="Home" />
       <Highlights/>
       <Heading tittle="Newly Arrived" subtittle="See All" />
-      <ProductCard />
+      <SectionCard cat_id={3} />
       <Lookbook />
       <Heading tittle="Best Seller" subtittle="See All" />
-      <ProductCard />
+      <SectionCard cat_id={3} />
       <Heading tittle="Dinning" subtittle="See All" />
-      <ProductCard />
+      <SectionCard  cat_id={3}/>
       <Heading tittle="Sofas" subtittle="See All" />
-      <ProductCard />
+      <SectionCard cat_id={3} />
      
 
       <Testimonials />

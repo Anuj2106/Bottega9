@@ -2,13 +2,15 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 // import { Home, Plus, Share2, Download } from 'lucide-react';
+const apiUrl = process.env.NEXT_PUBLIC_BACKEND_LINK;
+
 
 const UsersTable = () => {
   const [users, setUsers] = useState([]);
 
   useEffect(() => {
     axios
-      .get('http://localhost:3001/api/users')
+      .get(`${apiUrl}/api/users`)
       .then((res) => setUsers(res.data))
       .catch((err) => console.error('Error fetching users:', err));
   }, []);
@@ -17,7 +19,7 @@ const UsersTable = () => {
     const newStatus = currentStatus === 1 ? 0 : 1;
 
     try {
-      const res = await axios.put(`http://localhost:3001/api/users/status/${userId}`, {
+      const res = await axios.put(`${apiUrl}/api/users/status/${userId}`, {
         status: newStatus,
       });
 

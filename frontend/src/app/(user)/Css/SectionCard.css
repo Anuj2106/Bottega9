@@ -70,6 +70,7 @@
 .wishlist-btn {
   background: white;
   border: 1px solid var(--brand);
+  color: black;
   border-radius: 50%;
   padding: 4px;
   position: absolute;
@@ -79,10 +80,12 @@
   transition: background 0.3s;
 }
 .wishlist-btn:hover {
+  color: white;
   background: var(--brand);
 }
 .wishlist-btn:hover svg {
-  color: white;
+  color: white !important;
+
 }
 
 /* Hover Add-to-Cart */

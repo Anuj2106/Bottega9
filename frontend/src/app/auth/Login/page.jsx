@@ -8,8 +8,7 @@ export default function LoginPage() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const { loginUser } = useAuth();
-
-
+  
   const handleLogin = async (e) => {
     e.preventDefault();
     setError("");

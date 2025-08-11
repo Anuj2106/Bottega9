@@ -7,6 +7,7 @@ import Hero from "../Components/Hero";
 import ProductCard from "../Components/ProductCard";
 import axios from "axios";
 import "../Css/shop.css"; // new luxury styles here
+const apiUrl = process.env.NEXT_PUBLIC_BACKEND_LINK;
 
 const ProductList = () => {
   const [Product, SetProduct] = useState([]);
@@ -30,7 +31,7 @@ const ProductList = () => {
 
   const fetchProducts = async () => {
     try {
-      const response = await axios.get("http://localhost:3001/api/product/index", { withCredentials: true });
+      const response = await axios.get(`${apiUrl}/api/product/index`, { withCredentials: true });
 
       const data = response.data;
       const allProducts = data.products;

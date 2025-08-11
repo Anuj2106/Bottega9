@@ -2,6 +2,8 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Home, Share2, Download ,Edit, Trash2 } from 'lucide-react';
+const apiUrl = process.env.NEXT_PUBLIC_BACKEND_LINK;
+
 
 const OrderItems = () => {
     
@@ -9,7 +11,7 @@ const OrderItems = () => {
     useEffect(() => {
         const fetchOrders = async () => {
             try {
-                const response = await axios.get('http://localhost:3001/api/order-item', {
+                const response = await axios.get(`${apiUrl}/api/order-item`, {
                     withCredentials: true, // Include cookies for session management
                 });
                 console.log('Orders:', response.data);

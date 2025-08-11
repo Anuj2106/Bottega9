@@ -3,6 +3,8 @@ import {useState, useEffect } from 'react';
 import { Home, Plus, Share2, Download ,Edit, Trash2 } from 'lucide-react';
 
 import axios from 'axios';
+const apiUrl = process.env.NEXT_PUBLIC_BACKEND_LINK;
+
 const Category = () => {
     // Fetch product images from the backend
     const [categories, setCategories] = useState([]);
@@ -10,7 +12,7 @@ const Category = () => {
     useEffect(() => {
         const fetchCategories = async () => {
             try {
-                const response = await axios.get('http://localhost:3001/api/category', {
+                const response = await axios.get(`${apiUrl}/api/category`, {
                     withCredentials: true, // Include cookies for session management
                 });
                 console.log('Categories:', response.data);

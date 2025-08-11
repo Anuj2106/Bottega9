@@ -5,6 +5,8 @@ import { Heart } from "lucide-react";
 import "../Css/productCard.css";
 import Image from "next/image";
 import Link from "next/link";
+const apiUrl = process.env.NEXT_PUBLIC_BACKEND_LINK;
+
 
 const ProductCard = ({ products = [] }) => {
   const { addToCart } = useCart();
@@ -69,7 +71,7 @@ const ProductCard = ({ products = [] }) => {
                         {imageArray.map((imgUrl, index) => (
                           <div key={index} className={`carousel-item ${index === 0 ? "active" : ""}`}>
                             <Image
-                              src={`http://localhost:3001/uploads/product_images/${imgUrl}`}
+                              src={`${apiUrl}/uploads/product_images/${imgUrl}`}
                               width={500}
                               height={500}
                               className="d-block w-100 product-img"

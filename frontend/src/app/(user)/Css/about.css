@@ -26,18 +26,7 @@
   color: #fff;
 }
 
-/* Hero styling */
-.hero-section {
-  background: url('/images/hero-bg.jpg') center/cover fixed;
-  min-height: 90vh;
-  position: relative;
-}
-.hero-section::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: rgba(0,0,0,0.5);
-}
+
 
 /* Hover effects */
 .hover-scale {

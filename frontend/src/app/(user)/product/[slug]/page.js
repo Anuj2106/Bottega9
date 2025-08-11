@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
 import Image from "next/image";
+const apiUrl = process.env.NEXT_PUBLIC_BACKEND_LINK;
 
 export default function ProductPage() {
   const { slug } = useParams();
@@ -15,7 +16,7 @@ export default function ProductPage() {
 
     async function fetchProduct() {
       try {
-        const res = await fetch(`http://localhost:3001/api/products/${slug}`);
+        const res = await fetch(`${apiUrl}/api/products/${slug}`);
         if (!res.ok) throw new Error("Product not found");
         const data = await res.json();
 
@@ -51,7 +52,7 @@ export default function ProductPage() {
           <div className="border rounded p-2 shadow-sm text-center bg-white">
             {mainImage ? (
               <Image
-                src={`http://localhost:3001/uploads/product_images/${mainImage}`}
+                src={`${apiUrl}/uploads/product_images/${mainImage}`}
                 alt={product.prod_name}
                 width={500}
                 height={500}
@@ -69,7 +70,7 @@ export default function ProductPage() {
               {product.images.map((img, i) => (
                 <Image
                   key={i}
-                  src={`http://localhost:3001/uploads/product_images/${img}`}
+                  src={`${apiUrl}/uploads/product_images/${img}`}
                   alt={`Thumbnail ${i + 1}`}
                   width={80}
                   height={80}

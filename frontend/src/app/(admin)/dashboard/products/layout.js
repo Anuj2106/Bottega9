@@ -10,6 +10,8 @@ const Product = () => {
   const [imagePreviews, setImagePreviews] = useState([]);
   const [images, setImages] = useState([]);
   const [products, setProducts] = useState([]);
+  const apiUrl = process.env.NEXT_PUBLIC_BACKEND_LINK;
+
 
   const [editFormData, setEditFormData] = useState({
     prod_name: "",
@@ -48,7 +50,7 @@ const Product = () => {
 
   const fetchData = async () => {
     try {
-      const res = await axios.get('http://localhost:3001/api/product');
+      const res = await axios.get(`${apiUrl}/api/product`);
       setProducts(res.data.products);
       setCategories(res.data.categories);
       setBadges(res.data.badges);
@@ -87,7 +89,7 @@ const Product = () => {
     });
 
    try {
-  const res = await axios.post("http://localhost:3001/api/addproduct", submitData, {
+  const res = await axios.post(`${apiUrl}/api/addproduct`, submitData, {
     headers: {
       "Content-Type": "multipart/form-data",
     },
@@ -123,7 +125,7 @@ const Product = () => {
   const newStatus = currentStatus === 1 ? 0 : 1;
 
   try {
-    await axios.put(`http://localhost:3001/api/product/status/${productId}`, {
+    await axios.put(`${apiUrl}/api/product/status/${productId}`, {
       status: newStatus,
     });
 
@@ -159,7 +161,7 @@ const handleEditSubmit = async (e) => {
 
   try {
     const res = await axios.put(
-      `http://localhost:3001/api/product/edit/${editFormData.prod_id}`,
+      `${apiUrl}/api/product/edit/${editFormData.prod_id}`,
       formData,
       {
         headers: {
@@ -188,7 +190,7 @@ const handleEditSubmit = async (e) => {
 };
 const handleDeleteProduct = async (productId) => {
   try {
-    await axios.delete(`http://localhost:3001/api/product/${productId}`);
+    await axios.delete(`${apiUrl}/api/product/${productId}`);
     Swal.fire({
       icon: 'success',
       title: 'Product Deleted',

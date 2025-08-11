@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import Swal from 'sweetalert2';
 import axios from 'axios';
 import { Edit, Trash2, Video, Image, Plus, Share2, Download, Home } from 'lucide-react';
+const apiUrl = process.env.NEXT_PUBLIC_BACKEND_LINK;
 
 const Testimonials = () => {
   const [testimonials, setTestimonials] = useState([]);
@@ -36,7 +37,7 @@ const Testimonials = () => {
       Object.entries(formData).forEach(([key, value]) => {
         if (value !== null) payload.append(key, value);
       });
-      const res = await axios.post('http://localhost:3001/api/testimonials', payload, {
+      const res = await axios.post(`${apiUrl}/api/testimonials`, payload, {
         headers: { 'Content-Type': 'multipart/form-data' },
       });
       if (res.status === 200) {
@@ -56,7 +57,7 @@ const Testimonials = () => {
 
   const fetchTestimonials = async () => {
     try {
-      const res = await axios.get('http://localhost:3001/api/testimonials');
+      const res = await axios.get(`${apiUrl}/api/testimonials`);
       setTestimonials(res.data);
     } catch (error) {
       console.error('Error fetching testimonials:', error);
@@ -77,7 +78,7 @@ const Testimonials = () => {
     }).then(async (result) => {
       if (result.isConfirmed) {
         try {
-          await axios.delete(`http://localhost:3001/api/testimonials/${id}`);
+          await axios.delete(`${apiUrl}/api/testimonials/${id}`);
           setTestimonials((prev) => prev.filter((t) => t.id !== id));
           Swal.fire('Deleted!', 'The testimonial has been deleted.', 'success');
         } catch (error) {
@@ -91,7 +92,7 @@ const Testimonials = () => {
   const toggleStatus = async (id, currentStatus) => {
     try {
       const newStatus = currentStatus === 1 ? 0 : 1;
-      await axios.put(`http://localhost:3001/api/testimonials/${id}/status`, { status: newStatus });
+      await axios.put(`${apiUrl}/api/testimonials/${id}/status`, { status: newStatus });
       setTestimonials((prev) =>
         prev.map((t) => (t.id === id ? { ...t, status: newStatus } : t))
       );
@@ -166,7 +167,7 @@ const Testimonials = () => {
                       <td>{i + 1}</td>
                       <td>
                         <img
-                          src={`http://localhost:3001/uploads/images/${t.user_image}`}
+                          src={`${apiUrl}/uploads/images/${t.user_image}`}
                           alt="user"
                           className="rounded-circle"
                           style={{ width: '50px', height: '50px', objectFit: 'cover' }}
@@ -176,7 +177,7 @@ const Testimonials = () => {
                       <td>{t.message.slice(0, 50)}...</td>
                       <td>
                         {t.video_url ? (
-                          <a href={`http://localhost:3001/uploads/videos/${t.video_url}`} target="_blank" rel="noreferrer">
+                          <a href={`${apiUrl}/uploads/videos/${t.video_url}`} target="_blank" rel="noreferrer">
                             <Video size={20} />
                           </a>
                         ) : (

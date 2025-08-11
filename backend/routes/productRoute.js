@@ -21,5 +21,6 @@ router.delete('/product/:id', productController.Delete);
 router.put("/product/edit/:id",upload.none(), productController.updateProduct);
 router.get('/products/:slug', productController.getProductBySlug);
 router.get('/product-image', productController.showProductImages);
+router.get('/product/category/:cat_id', productController.getProductsByCategoryController);
 
 module.exports = router;

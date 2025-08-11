@@ -190,3 +190,28 @@ exports.getProductBySlug = (slug, callback) => {
     callback(null, results[0] || null); // Return single product or null
   });
 };
+// In your Products model file
+exports.getProductsByCategory = async (cat_id) => {
+  return new Promise((resolve, reject) => {
+    const query =`
+      SELECT 
+        products.*, 
+        category.cat_name,
+        badges.badge_name,
+        GROUP_CONCAT(product_images.img_path) AS images
+      FROM products
+      INNER JOIN category ON products.cat_id = category.cat_id
+      INNER JOIN badges ON products.badge_id = badges.badge_id
+      LEFT JOIN product_images ON products.prod_id = product_images.prod_id
+      WHERE products.cat_id = ?
+      GROUP BY products.prod_id
+    `;
+    db.query(query, [cat_id], (error, results) => {
+      if (error) {
+        return reject(error);
+      }
+      resolve(results);
+    });
+  });
+};
+

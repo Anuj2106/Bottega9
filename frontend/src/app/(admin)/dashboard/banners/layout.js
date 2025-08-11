@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import Swal from 'sweetalert2';
 import axios from 'axios';
 import { Edit, Trash2, Video, Image,Plus ,Share2,Download,Home} from 'lucide-react';
+const apiUrl = process.env.NEXT_PUBLIC_BACKEND_LINK;
 
 const Banner = () => {
       const [loading, setLoading] = useState(true);
@@ -15,7 +16,7 @@ const Banner = () => {
 
   const fetchBanners = async () => {
             try {
-                const response = await axios.get('http://localhost:3001/api/banner/allbanners', {
+                const response = await axios.get(`${apiUrl}/api/banner/allbanners`, {
                     withCredentials: true,
                 });
                 setBanners(response.data);
@@ -31,7 +32,7 @@ const Banner = () => {
 
   const pageOptions = [
     { label: "Home", value: "Home" }, 
-  { label: "All Products", value: "allproducts" },
+  { label: "About", value: "about" },
   { label: "New Arrivals", value: "newarrivals" },
   { label: "Sofas", value: "sofas" },
   { label: "Consoles", value: "consoles" },
@@ -79,7 +80,7 @@ const Banner = () => {
   }
 
   try {
-    const res = await axios.post("http://localhost:3001/api/banner/add", formData);
+    const res = await axios.post(`${apiUrl}/api/banner/add`, formData);
 
     if (res.status === 200) {
       Swal.fire({
@@ -115,7 +116,7 @@ const handleToggleStatus = async (bannerId, currentStatus) => {
     const updatedStatus = currentStatus === 1 ? 0 : 1;
 
     // Send update to backend
-    await axios.put(`http://localhost:3001/api/banner/status/${bannerId}`, {
+    await axios.put(`${apiUrl}/api/banner/status/${bannerId}`, {
       status: updatedStatus,
     });
 
@@ -134,7 +135,7 @@ const handleToggleStatus = async (bannerId, currentStatus) => {
 
  const handleDeleteBanner = async (bannerId) => {
   try {
-    axios.delete(`http://localhost:3001/api/banner/delete/${bannerId}`)
+    axios.delete(`${apiUrl}/api/banner/delete/${bannerId}`)
       .then((response) => {
         Swal.fire({
           icon: 'success',
@@ -233,7 +234,7 @@ const handleToggleStatus = async (bannerId, currentStatus) => {
                         <td>
                           {banner.banner_img ? (
                             <img
-                              src={`http://localhost:3001/uploads/banner_media/${banner.banner_img}`}
+                              src={`${apiUrl}/uploads/banner_media/${banner.banner_img}`}
                               alt={banner.banner_title}
                               style={{ width: '50px', height: '50px' }}
                             />
@@ -245,7 +246,7 @@ const handleToggleStatus = async (bannerId, currentStatus) => {
                           {banner.banner_video ? (
                             <video width="50" height="50" controls>
                               <source
-                                src={`http://localhost:3001/uploads/banner_videos/${banner.banner_video}`}
+                                src={`${apiUrl}/uploads/banner_videos/${banner.banner_video}`}
                                 type="video/mp4"
                               />
                               Your browser does not support the video tag.

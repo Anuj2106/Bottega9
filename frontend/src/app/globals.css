@@ -20,9 +20,13 @@ body {
   padding: 0;
 
   box-sizing: border-box;
-  font-family: var(--font-family) !important ;
+ 
    font-optical-sizing: auto;
 }
+h1,h2,h3,h4,h5{
+ font-family: var(--font-family) !important ;
+}
+
  /* universal container - using for layout width for max size  */
   .universal-container{
    

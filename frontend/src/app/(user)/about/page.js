@@ -2,35 +2,14 @@
 import Image from "next/image";
 import '../Css/about.css';
 import Link from "next/link";
+import Hero from "../Components/Hero";
 
 const AboutPage = () => {
   return (
     <div className="about-container container-fluid p-0">
       
       {/* Hero Section with Parallax */}
-      <section className="hero-section text-white d-flex align-items-center">
-        <div className="container d-flex flex-column flex-md-row align-items-center justify-content-between py-5">
-          <div className="text-center text-md-start px-4" style={{ maxWidth: '600px' }}>
-            <h1 className="display-3 fw-bold mb-4 animate-fade-up">Our Story</h1>
-            <p className="lead mb-4 animate-fade-up delay-1">
-              Where artisanal craftsmanship meets modern elegance.
-            </p>
-            <a href="#philosophy" className="btn btn-outline-light btn-lg fw-semibold animate-fade-up delay-2">
-              Discover Our Philosophy
-            </a>
-          </div>
-          <div className="px-4 animate-fade-left" style={{ maxWidth: '600px' }}>
-            <Image
-              src="/images/showroom.jpg"
-              alt="Bottega9 Showroom"
-              width={800}
-              height={600}
-              className="img-fluid rounded shadow-lg hover-scale"
-              priority
-            />
-          </div>
-        </div>
-      </section>
+     <Hero Page="about"/>
 
       {/* Brand Story */}
       <section className="bg-black text-white py-5">

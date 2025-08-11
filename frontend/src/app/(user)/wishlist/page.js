@@ -3,6 +3,8 @@ import { useWishlist } from "@/app/Context/wishlist/wishlistContext";
 import { useCart } from "@/app/Context/cart/cartContext";
 import Image from "next/image";
 import "../Css/wishlist.css"
+const apiUrl = process.env.NEXT_PUBLIC_BACKEND_LINK;
+
 
 const WishlistPage = () => {
   const { wishlistItems, removeFromWishlist } = useWishlist();
@@ -29,7 +31,7 @@ const WishlistPage = () => {
                   <div className="position-relative">
                     {imageArray[0] && (
                       <Image
-                        src={`http://localhost:3001/uploads/product_images/${imageArray[0]}`}
+                        src={`${apiUrl}/uploads/product_images/${imageArray[0]}`}
                         alt={item.prod_name}
                         width={400}
                         height={300}

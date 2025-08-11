@@ -8,6 +8,8 @@ const CartContext = createContext();
 export const CartProvider = ({ children }) => {
   const [cart, setCart] = useState([]);
   const { isAuthenticated, userId } = useAuth();
+  const apiUrl = process.env.NEXT_PUBLIC_BACKEND_LINK;
+
 
   // ✅ Fetch cart on mount or when userId changes
   useEffect(() => {
@@ -21,7 +23,7 @@ export const CartProvider = ({ children }) => {
     if (!isAuthenticated || !userId) return;
 
     try {
-      const res = await axios.get(`http://localhost:3001/api/cart/${userId}`);
+      const res = await axios.get(`${apiUrl}/api/cart/${userId}`);
       setCart(res.data);
     } catch (error) {
       console.error('Error fetching cart:', error);
@@ -36,7 +38,7 @@ export const CartProvider = ({ children }) => {
     }
 
     try {
-      await axios.post(`http://localhost:3001/api/cart/add`, {
+      await axios.post(`${apiUrl}/api/cart/add`, {
         user_id: userId,
         prod_id: prodId,
       });
@@ -54,7 +56,7 @@ export const CartProvider = ({ children }) => {
     }
 
     try {
-      await axios.delete(`http://localhost:3001/api/cart/remove/${userId}/${prodId}`);
+      await axios.delete(`${apiUrl}/api/cart/remove/${userId}/${prodId}`);
       fetchCart();
     } catch (error) {
       console.error('Error removing from cart:', error);
@@ -69,7 +71,7 @@ export const CartProvider = ({ children }) => {
     }
 
     try {
-      await axios.put(`http://localhost:3001/api/cart/update`, {
+      await axios.put(`${apiUrl}/api/cart/update`, {
         user_id: userId,
         
         prod_id: prodId,
@@ -89,7 +91,7 @@ export const CartProvider = ({ children }) => {
     }
 
     try {
-      await axios.delete(`http://localhost:3001/api/cart/clear/${userId}`);
+      await axios.delete(`${apiUrl}/api/cart/clear/${userId}`);
       setCart([]);
     } catch (error) {
       console.error('Error clearing cart:', error);

@@ -4,6 +4,7 @@ import axios from 'axios';
 import Link from 'next/link';
 import { Plus, Share2, Download , Home} from 'lucide-react';
 import Swal from 'sweetalert2';
+const apiUrl = process.env.NEXT_PUBLIC_BACKEND_LINK;
 
 const Lookbook = () => {
  const [lookbooks, setLookbooks] = useState([]); // State to manage lookbooks
@@ -15,7 +16,7 @@ const Lookbook = () => {
 
   const fetchLookbooks = async () => {
     try {
-      const response = await axios.get('http://localhost:3001/api/lookbook');
+      const response = await axios.get(` ${apiUrl}/api/lookbook`);
       setLookbooks(response.data.lookbooks || []);
     } catch (error) {
       console.error('Error fetching lookbooks:', error);
@@ -62,7 +63,7 @@ const Lookbook = () => {
 
     try {
       setLoading(true);
-      const res = await axios.post('http://localhost:3001/api/lookbook/upload', formData, {
+      const res = await axios.post(`${apiUrl}/api/lookbook/upload`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
@@ -95,7 +96,7 @@ const Lookbook = () => {
 
   const handleDelete = async (id) => {
     try {
-      const response = await axios.delete(`http://localhost:3001/api/lookbook/delete/${id}`);
+      const response = await axios.delete(`${apiUrl}/api/lookbook/delete/${id}`);
 
       Swal.fire({
         title: 'Deleted!',
@@ -180,7 +181,7 @@ const Lookbook = () => {
                     <td>{index + 1}</td>
                     <td>{lookbook.file_name}</td>
                     <td>
-                      <Link href={`http://localhost:3001/uploads/lookbooks/${lookbook.file_name}`} target="_blank" className="btn btn-sm btn-primary">
+                      <Link href={`${apiUrl}/uploads/lookbooks/${lookbook.file_name}`} target="_blank" className="btn btn-sm btn-primary">
                         View
                       </Link>
                       <button className="btn btn-sm btn-danger" onClick={() => handleDelete(lookbook.id)}>

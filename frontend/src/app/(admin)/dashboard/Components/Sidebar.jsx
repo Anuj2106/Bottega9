@@ -19,10 +19,13 @@ import {
 
 export default function Sidebar() {
   const router = useRouter();
+  const apiUrl = process.env.NEXT_PUBLIC_BACKEND_LINK;
+
+
 
   const handleLogout = async () => {
     try {
-      await axios.post('http://localhost:3001/api/logout', {}, { withCredentials: true });
+      await axios.post(`${apiUrl}/api/logout`, {}, { withCredentials: true });
       router.push('/');
     } catch (error) {
       console.error('Logout failed:', error.message);

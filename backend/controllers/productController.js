@@ -229,3 +229,18 @@ exports.getProductBySlug = (req, res) => {
     res.json(product);
   });
 };
+// get product by category 
+exports.getProductsByCategoryController = async (req, res) => {
+  try {
+    const { cat_id } = req.params;
+    if (!cat_id) {
+      return res.status(400).json({ message: 'Category ID is required' });
+    }
+
+    const products = await Products.getProductsByCategory(cat_id);
+    res.status(200).json(products);
+  } catch (error) {
+    console.error('Error fetching products:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+};

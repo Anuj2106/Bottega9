@@ -2,6 +2,8 @@
 import { useState } from "react";
 import axios from "axios";
 import Link from "next/link";
+const apiUrl = process.env.NEXT_PUBLIC_BACKEND_LINK;
+
 
 export default function RegisterPage() {
   // Theme
@@ -26,16 +28,17 @@ export default function RegisterPage() {
     }
 
     try {
-      const res = await axios.post("http://localhost:3001/api/register", {
-        user_name,
-        user_email,
-        user_pass,
-      });
+     const res = await axios.post(`${apiUrl}/api/register`, {
+  user_name,
+  user_email,
+  user_pass,
+});
+
 
       if (res.data.success) {
         alert("Registration successful! You can now log in.");
         form.reset();
-        window.location.href = "/login";
+        window.location.href = "/auth/Login";
       } else {
         alert(res.data.message || "Registration failed.");
       }

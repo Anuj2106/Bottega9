@@ -4,7 +4,7 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 
 const AuthContext = createContext();
-
+const apiUrl = process.env.NEXT_PUBLIC_BACKEND_LINK;
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -15,7 +15,7 @@ export const AuthProvider = ({ children }) => {
   const loginUser = async (email, password) => {
    
     try {
-      const response = await axios.post("http://localhost:3001/api/login", { 
+      const response = await axios.post(`${apiUrl}/api/login`, { 
         user_email:email,
          user_pass:password
          }, { withCredentials: true });
@@ -44,7 +44,7 @@ export const AuthProvider = ({ children }) => {
 
   const logout = async () => {
     try {
-      await axios.post("http://localhost:3001/api/logout", {}, { withCredentials: true });
+      await axios.post(`${apiUrl}/api/logout`, {}, { withCredentials: true });
       setUser(null);
       setIsAuthenticated(false);
       router.push("/");
@@ -56,7 +56,7 @@ export const AuthProvider = ({ children }) => {
 
   const checkAuth = async () => {
     try {
-      const res = await axios.get("http://localhost:3001/api/check-session", { withCredentials: true });
+      const res = await axios.get(`${apiUrl}/api/checks-ession`, { withCredentials: true });
       setUser(res.data.user);
         SetuserId(res.data.user.user_id);
       setIsAuthenticated(true);

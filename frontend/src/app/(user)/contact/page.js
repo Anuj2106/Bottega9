@@ -3,6 +3,8 @@ import { useState } from 'react';
 import Hero from '../Components/Hero';
 import { MapPin, Phone, Mail, Clock } from 'lucide-react';
 import '../Css/contact.css';
+const apiUrl = process.env.NEXT_PUBLIC_BACKEND_LINK;
+
 
 const ContactPage = () => {
   const [formData, setFormData] = useState({ name: '', email: '', phone: '', message: '' });
@@ -17,7 +19,7 @@ const ContactPage = () => {
     setStatus('Sending...');
     try {
       // Example API POST request - change URL to your backend handler
-      const res = await fetch('http://localhost:3001/api/contact', {
+      const res = await fetch(`${apiUrl}/api/contact`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),

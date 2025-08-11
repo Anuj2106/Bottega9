@@ -3,6 +3,7 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { useAuth } from "../auth/authContext"; // Make sure this path is correct
+const apiUrl = process.env.NEXT_PUBLIC_BACKEND_LINK;
 
 const WishlistContext = createContext();
 
@@ -15,7 +16,7 @@ export const WishlistProvider = ({ children }) => {
   useEffect(() => {
     if (isAuthenticated && userId) {
       axios
-        .get(`http://localhost:3001/api/wishlist/${userId}`)
+        .get(`${apiUrl}/api/wishlist/${userId}`)
         .then((res) => {
           // If response is [ {prod_id, ...productData} ]
           setWishlist(res.data.map((item) => item.prod_id)); // Only IDs
@@ -38,7 +39,7 @@ export const WishlistProvider = ({ children }) => {
 
     try {
       const res = await axios.post(
-        "http://localhost:3001/api/wishlist/toggle",
+        `${apiUrl}/api/wishlist/toggle`,
         {
           user_id: userId,
           prod_id,
@@ -48,7 +49,7 @@ export const WishlistProvider = ({ children }) => {
       // Refresh wishlist after toggle for latest data
       // Or update in-place if you know what changed
       axios
-        .get(`http://localhost:3001/api/wishlist/${userId}`)
+        .get(`${apiUrl}/api/wishlist/${userId}`)
         .then((res) => {
           setWishlist(res.data.map((item) => item.prod_id));
           setWishlistItems(res.data);
@@ -62,10 +63,10 @@ export const WishlistProvider = ({ children }) => {
   if (!isAuthenticated || !userId) return;
   try {
     await axios.delete(
-      `http://localhost:3001/api/wishlist/${userId}/${prod_id}`
+      `${apiUrl}/api/wishlist/${userId}/${prod_id}`
     );
     // Refresh the wishlist data
-    const res = await axios.get(`http://localhost:3001/api/wishlist/${userId}`);
+    const res = await axios.get(`${apiUrl}/api/wishlist/${userId}`);
     setWishlist(res.data.map(item => item.prod_id));
     setWishlistItems(res.data);
   } catch (err) {
