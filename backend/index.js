@@ -7,7 +7,7 @@ const PORT = process.env.PORT || 3001;
 const cookieParser = require('cookie-parser');
 
 app.use(cors({
-  origin: 'http://localhost:3000',
+  origin: process.env.FRONTEND_URL,
   credentials: true,
 }));
 
