@@ -28,7 +28,14 @@
       { href: "/collection/vintage", label: "Vintage" },
       { href: "/collection/minimal", label: "Minimal" },
     ];
-
+ const handleSearchSubmit = (e) => {
+    e.preventDefault();
+    const query = inputRef.current.value.trim();
+    if (query) {
+      window.location.href = `/search?q=${encodeURIComponent(query)}`;
+    }
+    setIsSearchOpen(false);
+  };
    
 
     // Main non-dropdown nav links

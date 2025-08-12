@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { useAuth } from "../../Context/auth/authContext";
 import Link from "next/link";
+import Image from "next/image";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -29,16 +30,18 @@ export default function LoginPage() {
         >
           {/* Image column */}
           <div className="col-md-6 d-none d-md-block p-0">
-            <img
-              src="/login-image.jpg"
+            <Image
+              src="/image/interior.jpg"
               alt="Login illustration"
               className="img-fluid h-100 w-100"
-              style={{
-                objectFit: "cover",
-                borderTopLeftRadius: "0.375rem",
-                borderBottomLeftRadius: "0.375rem",
-               
-              }}
+              width={600}
+              height={500}
+                style={{
+                  objectFit: "cover",
+                  borderTopLeftRadius: "0.375rem",
+                  borderBottomLeftRadius: "0.375rem",
+                
+                }}
             />
           </div>
 

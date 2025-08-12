@@ -1,5 +1,5 @@
 :root {
-  --gold: #C7A76D;
+  --gold: black;
 }
 
 .cart-page {
@@ -58,8 +58,8 @@
   border-radius: 16px;
   background: #fffbea;
 }
-.luxury-summary-row { font-size: 1rem; color: #7b6c4f;}
-.luxury-summary-total { color: #ad904e; }
+.luxury-summary-row { font-size: 1rem; color: var(--gold);}
+.luxury-summary-total { color: var(--gold); font-weight: bold; }
 
 .luxury-empty-state {
   background: #fffaea;

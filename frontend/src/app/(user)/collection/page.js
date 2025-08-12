@@ -1,134 +1,210 @@
 'use client';
-import Image from "next/image";
-import '../Css/collection.css'; // NEW luxury styles
+import { useState, useEffect } from "react";
+import { Range } from 'react-range';
+import { SlidersHorizontal } from "lucide-react";
+import Link from "next/link";
+import Hero from "../Components/Hero";
+import ProductCard from "../Components/ProductCard";
+import FilterSidebar from "../Components/Filters";
+import axios from "axios";
+import "../Css/shop.css";
+const apiUrl = process.env.NEXT_PUBLIC_BACKEND_LINK;
 
-const CollectionPage = ({ products = [] }) => {
+const CollectionPage = () => {
+  const [products, setProducts] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const [filteredProducts, setFilteredProducts] = useState([]);
+  const [sortOrder, setSortOrder] = useState(null);
+
+  const [globalMin, setGlobalMin] = useState(0);
+  const [globalMax, setGlobalMax] = useState(1000);
+  const [values, setValues] = useState([0, 1000]);
+  const [activeCategory, setActiveCategory] = useState(null);
+
+  const getSortLabel = () => {
+    switch (sortOrder) {
+      case 'lowToHigh': return 'Price: Low to High';
+      case 'highToLow': return 'Price: High to Low';
+      case 'newest':    return 'Newest';
+      default:          return 'Sort by';
+    }
+  };
+
+  const fetchProducts = async () => {
+    try {
+      const { data } = await axios.get(`${apiUrl}/api/product/index`, { withCredentials: true });
+      const all = data.products;
+      setProducts(all);
+      setFilteredProducts(all);
+      setCategories(data.categories);
+
+      const prices = all.map(p =>
+        p.prod_offerprice && !isNaN(p.prod_offerprice)
+          ? parseFloat(p.prod_offerprice)
+          : parseFloat(p.prod_price)
+      );
+      const min = Math.min(...prices);
+      const max = Math.max(...prices);
+      setGlobalMin(min);
+      setGlobalMax(max);
+      setValues([min, max]);
+    } catch (e) {
+      console.error("Error fetching products:", e);
+    }
+  };
+
+  useEffect(() => { fetchProducts(); }, []);
+
+  const handleCategoryClick = (catId) => {
+    setActiveCategory(catId);
+    applyFilters(sortOrder, [catId]);
+  };
+  const handleAllProducts = () => {
+    setActiveCategory(null);
+    applyFilters(sortOrder, []);
+  };
+
+  const handleSort = (order) => {
+    setSortOrder(order);
+    applyFilters(order, activeCategory ? [activeCategory] : []);
+  };
+
+  const applyFilters = (
+    customSort = sortOrder,
+    selCats = [],
+    selCols = null,
+    selBadges = null
+  ) => {
+    let list = products.filter(p => {
+      // category
+      const inCategory = !selCats.length || selCats.includes(p.cat_id);
+
+      // price
+      const price = p.prod_offerprice && !isNaN(p.prod_offerprice)
+        ? parseFloat(p.prod_offerprice)
+        : parseFloat(p.prod_price);
+      const inPrice = price >= values[0] && price <= values[1];
+
+      return inCategory && inPrice;
+    });
+
+    // color & badge filters from sidebar if provided
+    if (selCols?.length) {
+      list = list.filter(p =>
+        p.prod_color?.split(/[ ,]+/).some(c => selCols.includes(c.trim()))
+      );
+    }
+    if (selBadges?.length) {
+      list = list.filter(p => selBadges.includes(p.badge_name));
+    }
+
+    // sorting
+    if (customSort === 'lowToHigh') {
+      list.sort((a, b) =>
+        ( (a.prod_offerprice||a.prod_price) - (b.prod_offerprice||b.prod_price) )
+      );
+    }
+    if (customSort === 'highToLow') {
+      list.sort((a, b) =>
+        ( (b.prod_offerprice||b.prod_price) - (a.prod_offerprice||a.prod_price) )
+      );
+    }
+    if (customSort === 'newest') {
+      list.sort((a, b) =>
+        new Date(b.createdAt) - new Date(a.createdAt)
+      );
+    }
+
+    setFilteredProducts(list);
+  };
+
   return (
-    <main className="collection-page">
-
-      {/* Hero Banner */}
-      <section className="hero-banner d-flex align-items-center text-white text-center">
-        <div className="container animate-fade-up">
-          <h1 className="display-3 fw-bold mb-3">Explore Our Luxury Collections</h1>
-          <p className="lead mb-0">
-            Discover bespoke furniture crafted with passion and precision
-          </p>
-        </div>
-      </section>
-
+    <>
       {/* Breadcrumb */}
-      <nav aria-label="breadcrumb" className="bg-white py-3 border-bottom">
-        <div className="container">
-          <ol className="breadcrumb mb-0">
-            <li className="breadcrumb-item"><a href="#" className="text-dark">Home</a></li>
-            <li className="breadcrumb-item active" aria-current="page">Collections</li>
+      <div className="container my-3 fade-in">
+        <nav aria-label="breadcrumb">
+          <ol className="breadcrumb">
+            <li className="breadcrumb-item"><Link href="/">Home</Link></li>
+            <li className="breadcrumb-item active">Products</li>
           </ol>
+        </nav>
+      </div>
+
+      <Hero Page="allproducts" />
+
+      <div className="container my-4">
+        {/* Category Pills */}
+        <div className="categoryPillsWrapper mb-4">
+          <ul className="nav nav-pills flex-nowrap overflow-auto gold-scrollbar">
+            <li className="nav-item" key="all">
+              <button
+                className={`navPillsLink ${activeCategory === null ? "active" : ""}`}
+                onClick={handleAllProducts}
+              >All</button>
+            </li>
+            {categories.map(cat => (
+              <li className="nav-item" key={cat.cat_id}>
+                <button
+                  className={`navPillsLink ${activeCategory === cat.cat_id ? "active" : ""}`}
+                  onClick={() => handleCategoryClick(cat.cat_id)}
+                >
+                  {cat.cat_name}
+                </button>
+              </li>
+            ))}
+          </ul>
         </div>
-      </nav>
 
-      {/* Filters Section */}
-      <section className="filters-section py-4 bg-light">
-        <div className="container">
-          <div className="row g-3 align-items-center">
-            <div className="col-12 col-md-6">
-              <div className="d-flex flex-wrap gap-2">
-                {["Seating", "Tables", "Storage", "Lighting"].map((cat, i) => (
-                  <button key={i} className="btn btn-filter">{cat}</button>
-                ))}
-              </div>
-            </div>
-            <div className="col-12 col-md-6 text-md-end">
-              <select className="form-select form-select-sm w-auto d-inline-block">
-                <option value="popularity" defaultValue>Sort by popularity</option>
-                <option value="newest">Newest arrivals</option>
-                <option value="price-low-high">Price: Low to High</option>
-                <option value="price-high-low">Price: High to Low</option>
-              </select>
-            </div>
-          </div>
-        </div>
-      </section>
+        {/* Top Controls */}
+        <div className="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+          <button
+            className="btnFilter d-flex align-items-center gap-2"
+            type="button"
+            data-bs-toggle="offcanvas"
+            data-bs-target="#filterOffcanvas"
+          >
+            Filters <SlidersHorizontal strokeWidth={1.5} size={18} />
+          </button>
 
-      {/* Product Grid */}
-      <section className="products-section py-5">
-        <div className="container">
-          <div className="row g-4">
-            {products.length === 0 && (
-              <p className="text-center text-muted">No products available at the moment.</p>
-            )}
-            {products.map(product => {
-              const { prod_id, prod_name, prod_price, prodoffer_prize, prod_des, images } = product;
-              const imageArray = images?.split(",") || [];
-              return (
-                <div key={prod_id} className="col-12 col-sm-6 col-md-4 col-lg-3 animate-fade-up">
-                  <div className="product-card h-100 rounded shadow-sm overflow-hidden position-relative">
-                    {/* Image */}
-                    <div className="product-image-wrapper">
-                      {imageArray[0] && (
-                        <Image
-                          src={`http://localhost:3001/uploads/product_images/${imageArray[0]}`}
-                          alt={prod_name}
-                          width={400}
-                          height={400}
-                          className="product-image"
-                          unoptimized
-                        />
-                      )}
-                      {/* Hover Overlay */}
-                      <div className="product-overlay d-flex flex-column justify-content-center align-items-center">
-                        <button className="btn btn-gold btn-sm mb-2">Quick View</button>
-                        <button className="btn btn-outline-light btn-sm">Add to Cart</button>
-                      </div>
-                    </div>
-                    {/* Details */}
-                    <div className="p-3 d-flex flex-column">
-                      <h5 className="fw-semibold">{prod_name}</h5>
-                      <p className="text-muted flex-grow-1" style={{ fontSize: "0.9rem" }}>
-                        {prod_des.length > 60 ? prod_des.slice(0, 57) + "..." : prod_des}
-                      </p>
-                      <div className="d-flex justify-content-between align-items-center mt-2">
-                        <div>
-                          {prodoffer_prize < prod_price ? (
-                            <>
-                              <span className="fw-bold text-dark">₹{prodoffer_prize}</span>
-                              <span className="text-muted text-decoration-line-through ms-2">₹{prod_price}</span>
-                            </>
-                          ) : (
-                            <span className="fw-bold text-dark">₹{prod_price}</span>
-                          )}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-
-          {/* Pagination */}
-          <nav aria-label="Page navigation" className="mt-5">
-            <ul className="pagination justify-content-center">
-              <li className="page-item disabled"><a className="page-link">Previous</a></li>
-              <li className="page-item active"><a className="page-link">1</a></li>
-              <li className="page-item"><a className="page-link">2</a></li>
-              <li className="page-item"><a className="page-link">3</a></li>
-              <li className="page-item"><a className="page-link">Next</a></li>
+          <div className="dropdown">
+            <button className="btnSortDropdown dropdown-toggle" data-bs-toggle="dropdown">
+              {getSortLabel()}
+            </button>
+            <ul className="dropdown-menu shadow-sm">
+              <li>
+                <button className="dropdown-item" onClick={() => handleSort('lowToHigh')}>
+                  Price: Low to High
+                </button>
+              </li>
+              <li>
+                <button className="dropdown-item" onClick={() => handleSort('highToLow')}>
+                  Price: High to Low
+                </button>
+              </li>
+              <li>
+                <button className="dropdown-item" onClick={() => handleSort('newest')}>
+                  Newest
+                </button>
+              </li>
             </ul>
-          </nav>
+          </div>
         </div>
-      </section>
 
-      {/* Footer CTA */}
-      <section className="footer-cta py-5 text-center">
-        <div className="container animate-fade-up">
-          <h3 className="mb-3">Looking for personalized designs?</h3>
-          <p className="mb-4">
-            Get in touch with Bottega9 for a bespoke furniture consultation.
-          </p>
-          <button className="btn btn-gold btn-lg px-4">Book a Consultation</button>
-        </div>
-      </section>
-    </main>
+        {/* Product Grid */}
+        <ProductCard products={filteredProducts} />
+      </div>
+
+      {/* Filter Sidebar */}
+      <FilterSidebar
+        globalMin={globalMin}
+        globalMax={globalMax}
+        values={values}
+        setValues={setValues}
+        categories={categories}
+        applyFilter={applyFilters}
+        allProducts={products}
+      />
+    </>
   );
 };
 

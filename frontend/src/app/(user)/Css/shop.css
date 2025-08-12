@@ -66,3 +66,262 @@
   background-color: var(--gold);
   border-radius: 4px;
 }
+/* FilterSidebar Styling */
+
+/* Make offcanvas wider */
+#filterOffcanvas {
+  --bs-offcanvas-width: 380px;
+}
+
+@media (min-width: 768px) {
+  #filterOffcanvas {
+    --bs-offcanvas-width: 420px;
+  }
+}
+
+@media (max-width: 576px) {
+  #filterOffcanvas {
+    --bs-offcanvas-width: 100%;
+  }
+}
+
+/* Offcanvas styling */
+.offcanvas-header {
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  border-bottom: 1px solid #dee2e6;
+}
+
+.offcanvas-title {
+  font-weight: 600;
+  color: #333;
+}
+
+.offcanvas-body {
+  background: #fafbfc;
+  padding: 1.5rem;
+}
+
+/* Section headers */
+.filter-section-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 0.75rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid #e9ecef;
+}
+
+/* Category filters */
+.category-filters {
+  background: white;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.filter-checkbox {
+  display: flex;
+  align-items: center;
+  padding: 0.5rem 0;
+  margin-bottom: 0.25rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.filter-checkbox:hover {
+  background-color: rgba(0,0,0,0.02);
+  border-radius: 4px;
+}
+
+.filter-checkbox input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--gold, #d4af37);
+  margin-right: 0.75rem;
+  cursor: pointer;
+}
+
+.filter-checkbox label {
+  margin: 0;
+  cursor: pointer;
+  font-size: 0.9rem;
+  color: #555;
+  flex: 1;
+}
+
+/* Price range section */
+.price-range-section {
+  background: white;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.price-display {
+  background: #f8f9fa;
+  border-radius: 6px;
+  padding: 0.5rem 0.75rem;
+  margin-top: 0.75rem;
+  font-size: 0.85rem;
+  color: #666;
+  text-align: center;
+}
+
+/* Color filters */
+.color-filters {
+  background: white;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.color-option {
+  display: flex;
+  align-items: center;
+  padding: 0.5rem 0;
+  margin-bottom: 0.25rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.color-option:hover {
+  background-color: rgba(0,0,0,0.02);
+  border-radius: 4px;
+}
+
+.color-option input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--gold, #d4af37);
+  margin-right: 0.75rem;
+  cursor: pointer;
+}
+
+.color-preview {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 2px solid #ddd;
+  margin-right: 0.75rem;
+  flex-shrink: 0;
+}
+
+.color-name {
+  font-size: 0.9rem;
+  color: #555;
+  text-transform: capitalize;
+  cursor: pointer;
+  margin: 0;
+}
+
+/* Badge filters */
+.badge-filters {
+  background: white;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.badge-option {
+  display: flex;
+  align-items: center;
+  padding: 0.5rem 0;
+  margin-bottom: 0.25rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.badge-option:hover {
+  background-color: rgba(0,0,0,0.02);
+  border-radius: 4px;
+}
+
+.badge-option input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--gold, #d4af37);
+  margin-right: 0.75rem;
+  cursor: pointer;
+}
+
+.badge-text {
+  font-size: 0.9rem;
+  color: #555;
+  padding: 0.25rem 0.5rem;
+  background: #f8f9fa;
+  border-radius: 4px;
+  margin: 0;
+  cursor: pointer;
+}
+
+/* Apply button */
+.apply-filter-btn {
+  background: var(--gold, #d4af37);
+  border: none;
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.apply-filter-btn:hover {
+  background: #c19b26;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+  color: white;
+}
+
+/* Scrollable content */
+.offcanvas-body {
+  overflow-y: auto;
+}
+
+/* Custom scrollbar */
+.offcanvas-body::-webkit-scrollbar {
+  width: 6px;
+}
+
+.offcanvas-body::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 3px;
+}
+
+.offcanvas-body::-webkit-scrollbar-thumb {
+  background: var(--gold, #d4af37);
+  border-radius: 3px;
+}
+
+.offcanvas-body::-webkit-scrollbar-thumb:hover {
+  background: #c19b26;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 480px) {
+  .category-filters,
+  .price-range-section,
+  .color-filters,
+  .badge-filters {
+    padding: 0.75rem;
+    margin-bottom: 1rem;
+  }
+  
+  .filter-section-title {
+    font-size: 0.95rem;
+  }
+  
+  .filter-checkbox,
+  .color-option,
+  .badge-option {
+    padding: 0.4rem 0;
+  }
+  
+  .offcanvas-body {
+    padding: 1rem;
+  }
+}

@@ -77,12 +77,6 @@ export default function RegisterPage() {
           <div className="col-12 col-md-6 d-flex flex-column justify-content-center p-5">
             <div className="d-flex justify-content-between align-items-center mb-4">
               <h3 className="fw-bold">Create Your Account</h3>
-              <button
-                onClick={() => setDarkTheme(!darkTheme)}
-                className={`btn btn-sm ${darkTheme ? "btn-outline-light" : "btn-outline-dark"}`}
-              >
-                {darkTheme ? "Light Mode" : "Dark Mode"}
-              </button>
             </div>
 
             <form onSubmit={handleRegister}>
@@ -150,7 +144,7 @@ export default function RegisterPage() {
             <p className="mt-4 text-center">
               Already have an account?{" "}
               <Link
-                href="/login"
+                href="/auth/Login"
                 className={`text-decoration-none ${darkTheme ? "text-info" : "text-primary"}`}
               >
                 Login

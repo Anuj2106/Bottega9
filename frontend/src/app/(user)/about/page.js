@@ -27,7 +27,7 @@ const AboutPage = () => {
             </div>
             <div className="col-md-6 text-center animate-fade-left">
               <Image
-                src="/images/workshop.jpg"
+                src="/image/About1.jpg"
                 alt="Bottega9 Workshop"
                 width={600}
                 height={500}
@@ -44,9 +44,9 @@ const AboutPage = () => {
           <h2 className="text-center mb-5 fw-semibold animate-fade-up">Our Philosophy</h2>
           <div className="row g-4">
             {[
-              { number: "01", title: "Artisanal Excellence", desc: "..." },
-              { number: "02", title: "Modern Aesthetics", desc: "..." },
-              { number: "03", title: "Natural Materials", desc: "..." },
+                { number: "01", title: "Artisanal Excellence", desc: "We celebrate the skill and dedication of traditional artisans, ensuring that every piece is crafted with care." },
+                { number: "02", title: "Modern Aesthetics", desc: "Our designs blend contemporary trends with timeless elegance, creating spaces that are both stylish and functional." },
+                { number: "03", title: "Natural Materials", desc: "We prioritize the use of sustainable, natural materials, bringing warmth and authenticity to every project." },
             ].map((item, index) => (
               <div key={index} className="col-md-4 animate-fade-up delay-${index}">
                 <div className="philosophy-card p-4 h-100 text-center rounded shadow-sm">
@@ -69,9 +69,9 @@ const AboutPage = () => {
           </div>
           <div className="row g-4">
             {[
-              { title: "Interior Design", desc: "...", image: "/images/service1.jpg" },
-              { title: "Bespoke Furniture", desc: "...", image: "/images/service2.jpg" },
-              { title: "Express Makeovers", desc: "...", image: "/images/service3.jpg" }
+              { title: "Interior Design", desc: "Transform your space with our expert design services.", image: "/image/interior.jpg" },
+              { title: "Bespoke Furniture", desc: "Crafting unique furniture pieces tailored to your needs.", image: "/image/interior.jpg" },
+              { title: "Express Makeovers", desc: "Quick and stylish makeovers for any room.", image: "/image/interior.jpg" }
             ].map((service, idx) => (
               <div key={idx} className="col-md-4 animate-fade-up delay-${idx}">
                 <div className="service-card position-relative overflow-hidden rounded shadow-lg">
@@ -102,7 +102,12 @@ const AboutPage = () => {
               <div key={i} className="col-md-6 col-lg-3 animate-fade-up delay-${i}">
                 <div className="value-card p-4 bg-white rounded h-100 shadow-sm border-start border-3 border-gold hover-scale">
                   <h3 className="mb-3 fw-semibold">{val}</h3>
-                  <p>Sample description...</p>
+                  <p className="text-secondary">
+                    {val === "Quality" && "We ensure the highest standards in every project."}
+                    {val === "Innovation" && "Embracing new ideas to create unique solutions."}
+                    {val === "Sustainability" && "Committed to eco-friendly practices."}
+                    {val === "Heritage" && "Honoring traditional craftsmanship in modern design."}
+                  </p>
                 </div>
               </div>
             ))}

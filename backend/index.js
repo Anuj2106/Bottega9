@@ -5,15 +5,14 @@ const session = require("express-session");
 const app = express();
 const PORT = process.env.PORT || 3001;
 const cookieParser = require('cookie-parser');
+require('dotenv').config(); // Load environment variables from .env file
 
 app.use(cors({
   origin: process.env.FRONTEND_URL,
   credentials: true,
 }));
 
-
-
-require('dotenv').config(); // Load environment variables from .env file
+console.log("CORS enabled for:", process.env.FRONTEND_URL);
 //  For parsing cookies
 app.use(cookieParser());
 app.use(session({

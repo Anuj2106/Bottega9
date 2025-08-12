@@ -80,8 +80,7 @@
   transition: background 0.3s;
 }
 .wishlist-btn:hover {
-  color: white;
-  background: var(--brand);
+  color: black;
 }
 .wishlist-btn:hover svg {
   color: white !important;

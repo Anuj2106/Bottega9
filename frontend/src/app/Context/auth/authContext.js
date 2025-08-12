@@ -3,8 +3,8 @@ import { createContext, useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 
-const AuthContext = createContext();
 const apiUrl = process.env.NEXT_PUBLIC_BACKEND_LINK;
+const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);

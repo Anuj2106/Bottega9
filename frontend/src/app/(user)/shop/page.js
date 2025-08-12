@@ -5,90 +5,117 @@ import { SlidersHorizontal } from "lucide-react";
 import Link from "next/link";
 import Hero from "../Components/Hero";
 import ProductCard from "../Components/ProductCard";
+import FilterSidebar from "../Components/Filters";
 import axios from "axios";
-import "../Css/shop.css"; // new luxury styles here
+import "../Css/shop.css";
 const apiUrl = process.env.NEXT_PUBLIC_BACKEND_LINK;
 
 const ProductList = () => {
-  const [Product, SetProduct] = useState([]);
-  const [Categories, setCategories] = useState([]);
+  const [products, setProducts] = useState([]);
+  const [categories, setCategories] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
-  const [activeCategory, setActiveCategory] = useState(null);
   const [sortOrder, setSortOrder] = useState(null);
 
   const [globalMin, setGlobalMin] = useState(0);
   const [globalMax, setGlobalMax] = useState(1000);
   const [values, setValues] = useState([0, 1000]);
+  const [activeCategory, setActiveCategory] = useState(null);
 
   const getSortLabel = () => {
     switch (sortOrder) {
       case 'lowToHigh': return 'Price: Low to High';
       case 'highToLow': return 'Price: High to Low';
-      case 'newest': return 'Newest';
-      default: return 'Sort by';
+      case 'newest':    return 'Newest';
+      default:          return 'Sort by';
     }
   };
 
   const fetchProducts = async () => {
     try {
-      const response = await axios.get(`${apiUrl}/api/product/index`, { withCredentials: true });
-
-      const data = response.data;
-      const allProducts = data.products;
-
-      SetProduct(allProducts);
-      setFilteredProducts(allProducts);
+      const { data } = await axios.get(`${apiUrl}/api/product/index`, { withCredentials: true });
+      const all = data.products;
+      setProducts(all);
+      setFilteredProducts(all);
       setCategories(data.categories);
 
-      const prices = allProducts.map((p) =>
+      const prices = all.map(p =>
         p.prod_offerprice && !isNaN(p.prod_offerprice)
           ? parseFloat(p.prod_offerprice)
           : parseFloat(p.prod_price)
       );
-      const min = prices.length ? Math.min(...prices) : 0;
-      const max = prices.length ? Math.max(...prices) : 1000;
-
+      const min = Math.min(...prices);
+      const max = Math.max(...prices);
       setGlobalMin(min);
       setGlobalMax(max);
       setValues([min, max]);
-    } catch (error) {
-      console.error("Error fetching data:", error);
+    } catch (e) {
+      console.error("Error fetching products:", e);
     }
   };
 
   useEffect(() => { fetchProducts(); }, []);
 
-  const handleCategoryClick = (catId) => setActiveCategory(catId);
-  const handleAllProducts = () => { setFilteredProducts(Product); setActiveCategory(null); };
+  const handleCategoryClick = (catId) => {
+    setActiveCategory(catId);
+    applyFilters(sortOrder, [catId]);
+  };
+  const handleAllProducts = () => {
+    setActiveCategory(null);
+    applyFilters(sortOrder, []);
+  };
 
-  const handleSort = (order) => { setSortOrder(order); handleApplyFilter(order); };
+  const handleSort = (order) => {
+    setSortOrder(order);
+    applyFilters(order, activeCategory ? [activeCategory] : []);
+  };
 
-  const handleApplyFilter = (customSortOrder = sortOrder) => {
-    let filtered = Product.filter((prod) => {
-      const price = prod.prod_offerprice && !isNaN(prod.prod_offerprice)
-        ? parseFloat(prod.prod_offerprice)
-        : parseFloat(prod.prod_price);
+  const applyFilters = (
+    customSort = sortOrder,
+    selCats = [],
+    selCols = null,
+    selBadges = null
+  ) => {
+    let list = products.filter(p => {
+      // category
+      const inCategory = !selCats.length || selCats.includes(p.cat_id);
 
-      const matchesCategory = activeCategory === null || prod.cat_id === activeCategory;
-      const matchesPrice = price >= values[0] && price <= values[1];
-      return matchesCategory && matchesPrice;
+      // price
+      const price = p.prod_offerprice && !isNaN(p.prod_offerprice)
+        ? parseFloat(p.prod_offerprice)
+        : parseFloat(p.prod_price);
+      const inPrice = price >= values[0] && price <= values[1];
+
+      return inCategory && inPrice;
     });
 
-    if (customSortOrder === 'lowToHigh') {
-      filtered.sort((a, b) => (
-        (a.prod_offerprice || a.prod_price) - (b.prod_offerprice || b.prod_price)
-      ));
+    // color & badge filters from sidebar if provided
+    if (selCols?.length) {
+      list = list.filter(p =>
+        p.prod_color?.split(/[ ,]+/).some(c => selCols.includes(c.trim()))
+      );
     }
-    if (customSortOrder === 'highToLow') {
-      filtered.sort((a, b) => (
-        (b.prod_offerprice || b.prod_price) - (a.prod_offerprice || a.prod_price)
-      ));
-    }
-    if (customSortOrder === 'newest') {
-      filtered.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+    if (selBadges?.length) {
+      list = list.filter(p => selBadges.includes(p.badge_name));
     }
 
-    setFilteredProducts(filtered);
+    // sorting
+    if (customSort === 'lowToHigh') {
+      list.sort((a, b) =>
+        ( (a.prod_offerprice||a.prod_price) - (b.prod_offerprice||b.prod_price) )
+      );
+    }
+    if (customSort === 'highToLow') {
+      list.sort((a, b) =>
+        ( (b.prod_offerprice||b.prod_price) - (a.prod_offerprice||a.prod_price) )
+      );
+    }
+    if (customSort === 'newest') {
+      list.sort((a, b) =>
+        new Date(b.createdAt) - new Date(a.createdAt)
+      );
+    }
+
+    setFilteredProducts(list);
   };
 
   return (
@@ -98,12 +125,11 @@ const ProductList = () => {
         <nav aria-label="breadcrumb">
           <ol className="breadcrumb">
             <li className="breadcrumb-item"><Link href="/">Home</Link></li>
-            <li className="breadcrumb-item active" aria-current="page">Products</li>
+            <li className="breadcrumb-item active">Products</li>
           </ol>
         </nav>
       </div>
 
-      {/* Hero */}
       <Hero Page="allproducts" />
 
       <div className="container my-4">
@@ -113,15 +139,17 @@ const ProductList = () => {
             <li className="nav-item" key="all">
               <button
                 className={`navPillsLink ${activeCategory === null ? "active" : ""}`}
-                onClick={() => { handleAllProducts(); }}
+                onClick={handleAllProducts}
               >All</button>
             </li>
-            {Categories.map((cat) => (
+            {categories.map(cat => (
               <li className="nav-item" key={cat.cat_id}>
                 <button
                   className={`navPillsLink ${activeCategory === cat.cat_id ? "active" : ""}`}
-                  onClick={() => { handleCategoryClick(cat.cat_id); handleApplyFilter(); }}
-                >{cat.cat_name}</button>
+                  onClick={() => handleCategoryClick(cat.cat_id)}
+                >
+                  {cat.cat_name}
+                </button>
               </li>
             ))}
           </ul>
@@ -143,81 +171,39 @@ const ProductList = () => {
               {getSortLabel()}
             </button>
             <ul className="dropdown-menu shadow-sm">
-              <li><button className="dropdown-item" onClick={() => handleSort('lowToHigh')}>Price: Low to High</button></li>
-              <li><button className="dropdown-item" onClick={() => handleSort('highToLow')}>Price: High to Low</button></li>
-              <li><button className="dropdown-item" onClick={() => handleSort('newest')}>Newest</button></li>
+              <li>
+                <button className="dropdown-item" onClick={() => handleSort('lowToHigh')}>
+                  Price: Low to High
+                </button>
+              </li>
+              <li>
+                <button className="dropdown-item" onClick={() => handleSort('highToLow')}>
+                  Price: High to Low
+                </button>
+              </li>
+              <li>
+                <button className="dropdown-item" onClick={() => handleSort('newest')}>
+                  Newest
+                </button>
+              </li>
             </ul>
           </div>
         </div>
 
         {/* Product Grid */}
         <ProductCard products={filteredProducts} />
-
-        {/* Offcanvas Filter Menu */}
-        <div className="offcanvas offcanvas-start" id="filterOffcanvas">
-          <div className="offcanvas-header">
-            <h5 className="offcanvas-title">Filters</h5>
-            <button type="button" className="btn-close" data-bs-dismiss="offcanvas"></button>
-          </div>
-          <div className="offcanvas-body">
-            <h6 className="mb-3">Price Range</h6>
-            <div className="mb-3">
-             <Range
-  step={1}
-  min={globalMin}
-  max={globalMax}
-  values={values}
-  onChange={(vals) => setValues(vals)}
-
-  renderTrack={({ props, children }) => {
-    const { key, ...rest } = props; // remove key from spread
-    return (
-      <div
-        key={key}
-        {...rest}
-        style={{
-          ...rest.style,
-          height: '5px',
-          background: 'var(--gold)',
-          borderRadius: '3px',
-          display: 'flex',
-          alignItems: 'center'
-        }}
-      >
-        {children}
       </div>
-    );
-  }}
 
-  renderThumb={({ props }) => {
-    const { key, ...rest } = props; // remove key from spread
-    return (
-      <div
-        key={key}
-        {...rest}
-        style={{
-          height: '18px',
-          width: '18px',
-          borderRadius: '50%',
-          backgroundColor: 'white',
-          border: '2px solid var(--gold)'
-        }}
+      {/* Filter Sidebar */}
+      <FilterSidebar
+        globalMin={globalMin}
+        globalMax={globalMax}
+        values={values}
+        setValues={setValues}
+        categories={categories}
+        applyFilter={applyFilters}
+        allProducts={products}
       />
-    );
-  }}
-/>
-
-              <small className="text-muted d-block mt-2">₹{values[0]} – ₹{values[1]} (Min: ₹{globalMin} Max: ₹{globalMax})</small>
-            </div>
-
-            <div className="applyFilterSticky">
-              <button className="btn btn-gold w-100" data-bs-dismiss="offcanvas" onClick={handleApplyFilter}>
-                Apply Filter
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
     </>
   );
 };
