@@ -9,6 +9,7 @@ require('dotenv').config(); // Load environment variables from .env file
 
 app.use(cors({
   origin: process.env.FRONTEND_URL,
+    
   credentials: true,
 }));
 
