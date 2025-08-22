@@ -244,3 +244,20 @@ exports.getProductsByCategoryController = async (req, res) => {
     res.status(500).json({ message: 'Server error' });
   }
 };
+exports.searchProducts = (req, res) => {
+  const slug = req.params.slug || req.query.slug;
+  if (!slug) return res.json([]);
+
+  // Slug → normal search text
+  const query = slug.replace(/-/g, " ");
+
+  Products.searchProducts(query, (err, results) => {
+    if (err) {
+      console.error("Search Controller Error:", err);
+      return res.status(500).json({ error: err.message });
+    }
+    res.json(results);
+  });
+};
+
+

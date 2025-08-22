@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
 import Image from "next/image";
+import ProductFAQ from "../../Components/Faq";
 const apiUrl = process.env.NEXT_PUBLIC_BACKEND_LINK;
 
 export default function ProductPage() {
@@ -125,27 +126,46 @@ export default function ProductPage() {
           <p><strong>Stock:</strong> {product.stock_quantity}</p>
 
           {/* Add to Cart Button */}
-          <button className="btn btn-primary btn-lg w-100 mt-3">
+          <button className="btn btn-dark btn-md w-50 mt-3">
             Add to Cart
           </button>
-        </div>
-      </div>
-
-      {/* FEATURES SECTION */}
+            {/* FEATURES SECTION */}
       {product.prod_think && (
-        <section className="mt-5">
-          <h3 className="mb-3">Features / Additional Info</h3>
-          <p className="mb-0">{product.prod_think}</p>
-        </section>
-      )}
+  <section className="mt-5">
+    <h3 className="mb-3">Features / Additional Info</h3>
+    <ul className="mb-0">
+      {product.prod_think
+        .split(/\n|,|\r/) // split on new lines or commas
+        .map((item, index) => (
+          <li key={index}>{item.trim()}</li>
+        ))}
+    </ul>
+  </section>
+)}
+
 
       {/* DIMENSIONS SECTION */}
       {product.prod_dimensions && (
-        <section className="mt-4">
-          <h5 className="mb-2">Dimensions</h5>
-          <p className="mb-0">{product.prod_dimensions}</p>
-        </section>
-      )}
+  <section className="mt-4">
+    <h5 className="mb-2">Dimensions</h5>
+    <ul className="mb-0">
+      {product.prod_dimensions
+        .split(/\n|,|\r/) // split by new lines or commas
+        .map((item, index) => (
+          <li key={index}>{item.trim()}</li>
+        ))}
+    </ul>
+  </section>
+    )}
+        </div>
+
+      </div>
+
+    
+      {/* FAQ Section */}
+      <section className="mt-5">
+        <ProductFAQ />
+      </section>
     </main>
   );
 }

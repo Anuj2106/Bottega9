@@ -16,6 +16,9 @@
     const [isShopOpen, setIsShopOpen] = useState(false);
     const [isSearchOpen, setIsSearchOpen] = useState(false);
     const inputRef = useRef(null);
+    
+  
+
       useEffect(() => {
       if (isSearchOpen && inputRef.current) {
         inputRef.current.focus();
@@ -29,13 +32,19 @@
       { href: "/collection/minimal", label: "Minimal" },
     ];
  const handleSearchSubmit = (e) => {
-    e.preventDefault();
-    const query = inputRef.current.value.trim();
-    if (query) {
-      window.location.href = `/search?q=${encodeURIComponent(query)}`;
-    }
-    setIsSearchOpen(false);
-  };
+  e.preventDefault();
+  const query = inputRef.current.value.trim();
+  if (query) {
+    const slug = query
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, "-") // replace spaces/special chars with -
+      .replace(/(^-|-$)+/g, "");   // remove starting/ending -
+      
+    window.location.href = `/search/${slug}`;
+  }
+  setIsSearchOpen(false);
+};
+
    
 
     // Main non-dropdown nav links
@@ -98,14 +107,8 @@
           </button>
         )}
         {isSearchOpen && (
-          <form
-            className="d-flex"
-            onSubmit={(e) => {
-              e.preventDefault();
-              // Handle your search submit logic here
-              setIsSearchOpen(false);
-            }}
-          >
+          <form className="d-flex" onSubmit={handleSearchSubmit}>
+
             <input
               type="search"
               ref={inputRef}

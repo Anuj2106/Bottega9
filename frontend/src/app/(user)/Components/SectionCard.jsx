@@ -52,7 +52,7 @@ const SectionCard = ({ cat_id }) => {
 
   return (
     <section className="container my-5">
-      <div className="horizontal-scroll-wrapper row">
+      <div className="horizontal-scroll-wrapper   ">
         {products.map((product) => {
           const {
             prod_id,

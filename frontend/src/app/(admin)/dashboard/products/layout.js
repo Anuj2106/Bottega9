@@ -3,36 +3,34 @@ import { useEffect, useState } from 'react';
 import Swal from 'sweetalert2';
 import axios from 'axios';
 import { Home, Plus, Share2, Download, Edit, Trash } from 'lucide-react';
+import { DataGrid,
+  GridToolbarContainer,
+  GridToolbarQuickFilter,
+  GridToolbarColumnsButton,
+  GridToolbarFilterButton,
+  GridToolbarDensitySelector,
+  GridToolbarExport, } from '@mui/x-data-grid';
+  function CustomToolbar() {
+  return (
+    <GridToolbarContainer>
+      <GridToolbarColumnsButton />
+      <GridToolbarFilterButton />
+      <GridToolbarDensitySelector />
+      <GridToolbarExport />
+      <GridToolbarQuickFilter /> {/* 🔍 search box */}
+    </GridToolbarContainer>
+  );
+}
 
 const Product = () => {
   const [categories, setCategories] = useState([]);
   const [badges, setBadges] = useState([]);
-  const [imagePreviews, setImagePreviews] = useState([]);
-  const [images, setImages] = useState([]);
   const [products, setProducts] = useState([]);
   const apiUrl = process.env.NEXT_PUBLIC_BACKEND_LINK;
 
-
-  const [editFormData, setEditFormData] = useState({
-    prod_name: "",
-    prod_des: "",
-    prod_price: "",
-    prodoffer_prize: "",
-    stock_quantity: "",
-    cat_id: "",
-    badge_id: "",
-    prod_status: "1",
-    prod_color: "",
-    prod_dimensions: "",
-    prod_think: "",
-    prod_review: "",
-    prod_id: "",
-  });
-
-  const [searchTerm, setSearchTerm] = useState("");
-  const [entriesToShow, setEntriesToShow] = useState(5);
-  const [currentPage, setCurrentPage] = useState(1);
-
+  const [editFormData, setEditFormData] = useState({});
+  const [imagePreviews, setImagePreviews] = useState([]);
+  const [images, setImages] = useState([]);
   const [formData, setFormData] = useState({
     prod_name: '',
     prod_des: '',
@@ -42,12 +40,13 @@ const Product = () => {
     stock_quantity: '',
     category_id: '',
     badge_id: '',
-    prod_status: '1', // Default to active
+    prod_status: '1',
     prod_color: '',
     prod_dimensions: '',
     prod_think: '',
   });
 
+  // Fetch Products, Categories, Badges
   const fetchData = async () => {
     try {
       const res = await axios.get(`${apiUrl}/api/product`);
@@ -62,21 +61,9 @@ const Product = () => {
   useEffect(() => {
     fetchData();
   }, []);
-
-  const handleChange = (e) => {
-    setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }));
-  };
-
-  const handleImageChange = (e) => {
-    const files = Array.from(e.target.files);
-    setImages(files);
-    const previews = files.map(file => URL.createObjectURL(file));
-    setImagePreviews(previews);
-  };
-
-
-  // handleSubmit, handleToggleStatus, handleEditProduct, handleEditChange, handleEditSubmit, handleDeleteProduct ...
- const handleSubmit = async (e) => {
+  const handleChange = (e) => { setFormData(prev => ({ ...prev, [e.target.name]: e.target.value })); }; const handleImageChange = (e) => { const files = Array.from(e.target.files); setImages(files); const previews = files.map(file => URL.createObjectURL(file)); setImagePreviews(previews); };
+  //  Submit 
+   const handleSubmit = async (e) => {
     e.preventDefault();
 
     const submitData = new FormData();
@@ -121,118 +108,124 @@ const Product = () => {
   });
 }
   };
+
+  // Toggle Product Status
   const handleToggleStatus = async (productId, currentStatus) => {
-  const newStatus = currentStatus === 1 ? 0 : 1;
-
-  try {
-    await axios.put(`${apiUrl}/api/product/status/${productId}`, {
-      status: newStatus,
-    });
-
-    // Optionally update the local state or refetch data
-    setProducts(prev =>
-      prev.map(prod =>
-        prod.prod_id === productId ? { ...prod, prod_status: newStatus } : prod
-      )
-    );
-  } catch (error) {
-    console.error('Error updating product status:', error);
-  }
-};
-
-const handleEditProduct = (product) => {
-  setEditFormData(product);
-};
-
-const handleEditChange = (e) => {
-  const { name, value } = e.target;
-  setEditFormData((prev) => ({ ...prev, [name]: value }));
-};
-
-
-const handleEditSubmit = async (e) => {
-  e.preventDefault();
-
-  const formData = new FormData();
-
-  for (const key in editFormData) {
-    formData.append(key, editFormData[key]);
-  }
-
-  try {
-    const res = await axios.put(
-      `${apiUrl}/api/product/edit/${editFormData.prod_id}`,
-      formData,
-      {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      }
-    );
-
-    Swal.fire({
-      icon: 'success',
-      title: 'Product Updated',
-      text: 'Your product has been successfully updated!',
-      timer: 2000,
-      showConfirmButton: false,
-    }).then(() => {
-      // Refresh the page after alert closes
-      fetchData();
-    });
-
-    // Optionally refresh product list or close modal
-    document.querySelector('#editProductModal .btn-close').click(); // closes modal // if you have a function to reload products
-
-  } catch (error) {
-    console.error('Update failed:', error);
-  }
-};
-const handleDeleteProduct = async (productId) => {
-  try {
-    await axios.delete(`${apiUrl}/api/product/${productId}`);
-    Swal.fire({
-      icon: 'success',
-      title: 'Product Deleted',
-      text: 'Your product has been successfully deleted!',
-      timer: 2000,
-      showConfirmButton: false,
-    });
-    fetchData();
-  } catch (error) {
-    Swal.fire({
-      icon: 'error',
-      title: 'Failed to Delete Product',
-      text: 'Something went wrong while deleting the product!',
-    });
-
-    console.error('Error deleting product:', error);
-  }
-};  
-
-
-
-
-
-
-  const filteredProducts = products.filter((prod) =>
-    prod.prod_name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
-  const totalPages = Math.ceil(filteredProducts.length / entriesToShow);
-  const currentProducts = filteredProducts.slice(
-    (currentPage - 1) * entriesToShow,
-    currentPage * entriesToShow
-  );
-  const handlePageChange = (page) => {
-    if (page >= 1 && page <= totalPages) {
-      setCurrentPage(page);
+    const newStatus = currentStatus === 1 ? 0 : 1;
+    try {
+      await axios.put(`${apiUrl}/api/product/status/${productId}`, {
+        status: newStatus,
+      });
+      setProducts((prev) =>
+        prev.map((prod) =>
+          prod.prod_id === productId ? { ...prod, prod_status: newStatus } : prod
+        )
+      );
+    } catch (error) {
+      console.error('Error updating status:', error);
     }
   };
 
-  const truncateDescription = (text, maxWords = 15) => {
-    const words = text?.split(" ") || [];
-    return words.length > maxWords ? words.slice(0, maxWords).join(" ") + "..." : text;
+  // Edit
+  const handleEditProduct = (product) => {
+    setEditFormData(product);
+  
   };
+
+  const handleEditChange = (e) => {
+    const { name, value } = e.target;
+    setEditFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleEditSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      await axios.put(
+        `${apiUrl}/api/product/edit/${editFormData.prod_id}`,
+        editFormData
+      );
+      Swal.fire('Updated!', 'Product updated successfully.', 'success');
+      fetchData();
+    } catch (error) {
+      console.error('Error updating product:', error);
+    }
+  };
+
+  // Delete
+  const handleDeleteProduct = async (productId) => {
+    try {
+      await axios.delete(`${apiUrl}/api/product/${productId}`);
+      Swal.fire('Deleted!', 'Product deleted successfully.', 'success');
+      fetchData();
+    } catch (error) {
+      Swal.fire('Error!', 'Failed to delete product.', 'error');
+    }
+  };
+
+  // DataGrid columns
+  const columns = [
+    { field: 'id', headerName: '#', width: 70 },
+    { field: 'prod_name', headerName: 'Name', width: 200 },
+    {
+      field: 'prod_des',
+      headerName: 'Description',
+      width: 250,
+      renderCell: (params) =>
+        params.value?.length > 40
+          ? `${params.value.slice(0, 40)}...`
+          : params.value,
+    },
+    { field: 'prod_review', headerName: 'Review', width: 100 },
+    { field: 'cat_name', headerName: 'Category', width: 150 },
+    { field: 'prod_price', headerName: 'Price', width: 100 },
+    { field: 'prodoffer_prize', headerName: 'Offer Price', width: 120 },
+    { field: 'stock_quantity', headerName: 'Stock', width: 100 },
+    { field: 'badge_name', headerName: 'Badge', width: 120 },
+    {
+      field: 'prod_status',
+      headerName: 'Status',
+      width: 120,
+      renderCell: (params) => (
+        <button
+          className={`btn btn-sm ${
+            params.value === 1 ? 'btn-success' : 'btn-danger'
+          }`}
+          onClick={() =>
+            handleToggleStatus(params.row.prod_id, params.row.prod_status)
+          }
+        >
+          {params.value === 1 ? 'Active' : 'Inactive'}
+        </button>
+      ),
+    },
+    {
+      field: 'actions',
+      headerName: 'Actions',
+      width: 150,
+      renderCell: (params) => (
+        <>
+          <button
+            className="btn btn-sm btn-primary me-2"
+            onClick={() => handleEditProduct(params.row)}
+            data-bs-toggle="modal" data-bs-target="#editProductModal"
+          >
+            <Edit size={14} />
+          </button>
+          <button
+            className="btn btn-sm btn-danger"
+            onClick={() => handleDeleteProduct(params.row.prod_id)}
+          >
+            <Trash size={14} />
+          </button>
+        </>
+      ),
+    },
+  ];
+
+  const rows = products.map((p, i) => ({
+    id: i + 1,
+    ...p,
+  }));
 
   return (
     <>
@@ -249,7 +242,9 @@ const handleDeleteProduct = async (productId) => {
               <li className="breadcrumb-item">
                 <a href="#">Volt</a>
               </li>
-              <li className="breadcrumb-item active" aria-current="page">Products</li>
+              <li className="breadcrumb-item active" aria-current="page">
+                Products
+              </li>
             </ol>
           </nav>
           <h2 className="h1">All Products</h2>
@@ -257,7 +252,7 @@ const handleDeleteProduct = async (productId) => {
         </div>
 
         <div className="btn-toolbar mb-2 mb-md-0">
-          <button 
+          <button
             type="button"
             className="btn btn-dark"
             data-bs-toggle="modal"
@@ -267,146 +262,43 @@ const handleDeleteProduct = async (productId) => {
             Add Products
           </button>
           <div className="btn-group ms-2 ms-lg-3">
-            <button type="button" className="btn btn-sm btn-success btn-outline-gray-600">
+            <button
+              type="button"
+              className="btn btn-sm btn-success btn-outline-gray-600"
+            >
               <Share2 size={14} className="me-1" /> Share
             </button>
-            <button type="button" className="btn btn-sm btn-primary btn-outline-gray-600">
+            <button
+              type="button"
+              className="btn btn-sm btn-primary btn-outline-gray-600"
+            >
               <Download size={14} className="me-1" /> Export
             </button>
           </div>
         </div>
       </div>
 
-      {/* Table with Pagination and Search */}
+      {/* DataGrid inside Card */}
       <div className="card border-0 shadow mb-4">
         <div className="card-header">
-          <div className="d-flex justify-content-between align-items-center mb-3">
-            <div>
-              <label className="me-2">Show</label>
-              <select
-                value={entriesToShow}
-                onChange={(e) => {
-                  setEntriesToShow(parseInt(e.target.value));
-                  setCurrentPage(1);
-                }}
-                className="form-select d-inline-block w-auto"
-              >
-                <option value="5">5</option>
-                <option value="10">10</option>
-                <option value="20">20</option>
-              </select>
-              <span className="ms-2">entries</span>
-            </div>
-
-            <div className="d-flex align-items-center">
-              <label className="me-2 mb-0">Search:</label>
-              <input
-                type="text"
-                className="form-control"
-                aria-label="Search products..."
-                placeholder="Search products..."
-                value={searchTerm}
-                onChange={(e) => {
-                  setSearchTerm(e.target.value);
-                  setCurrentPage(1);
-                }}
-              />
-            </div>
-          </div>
+          <h5 className="mb-0">Products List</h5>
         </div>
-
         <div className="card-body">
-          <div className="table-responsive">
-            <table className="table table-centered table-nowrap mb-0 rounded" role="table">
-              <thead className="thead-light">
-                <tr>
-                  <th scope="col" className="border-0 rounded-start">#</th>
-                  <th scope="col" className="border-0">Name</th>
-                  <th scope="col" className="border-0">Description</th>
-                  <th scope="col" className="border-0">Review</th>
-                  <th scope="col" className="border-0">Category</th>
-                  <th scope="col" className="border-0">Price</th>
-                  <th scope="col" className="border-0">Offer Price</th>
-                  <th scope="col" className="border-0">Stocks</th>
-                  <th scope="col" className="border-0">Badges</th>
-                  <th scope="col" className="border-0">Status</th>
-                  <th scope="col" className="border-0 rounded-end">Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {currentProducts.map((prod, index) => (
-                  <tr key={prod.prod_id}>
-                    <td>{(currentPage - 1) * entriesToShow + index + 1}</td>
-                    <td>{prod.prod_name}</td>
-                    <td>{truncateDescription(prod.prod_des)}</td>
-                    <td>{prod.prod_review}</td>
-                    <td>{prod.cat_name}</td>
-                    <td>{prod.prod_price}</td>
-                    <td>{prod.prodoffer_prize}</td>
-                    <td>{prod.stock_quantity}</td>
-                    <td>{prod.badge_name}</td>
-                    <td>
-                      <button
-                        className={`btn btn-sm ${prod.prod_status === 1 ? 'btn-success' : 'btn-danger'}`}
-                        onClick={() => handleToggleStatus(prod.prod_id, prod.prod_status)}
-                      >
-                        {prod.prod_status === 1 ? 'Active' : 'Inactive'}
-                      </button>
-                    </td>
-                    <td>
-                      <button
-                        className="btn btn-sm btn-primary me-2"
-                        data-bs-toggle="modal"
-                        data-bs-target="#editProductModal"
-                        onClick={() => handleEditProduct(prod)}
-                      >
-                        <Edit size={16} />
-                      </button>
-                      <button
-                        className="btn btn-sm btn-danger"
-                        onClick={() => handleDeleteProduct(prod.prod_id)}
-                      >
-                        <Trash size={16} />
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+          <div style={{ height: 500, width: '100%' }}>
+            <DataGrid
+              rows={rows}
+              columns={columns}
+              pageSize={5}
+              checkboxSelection
+              disableRowSelectionOnClick
+              slots={{ toolbar: CustomToolbar }} // ✅ new toolbar
+            />
           </div>
-        </div>
-
-        <div className="card-footer d-flex justify-content-between align-items-center mt-3">
-          <div>
-            Showing {(currentPage - 1) * entriesToShow + 1} to{" "}
-            {Math.min(currentPage * entriesToShow, filteredProducts.length)} of{" "}
-            {filteredProducts.length} entries
-          </div>
-          <nav>
-            <ul className="pagination mb-0">
-              <li className={`page-item ${currentPage === 1 && "disabled"}`}>
-                <button className="page-link" onClick={() => handlePageChange(currentPage - 1)}>
-                  Previous
-                </button>
-              </li>
-              {[...Array(totalPages)].map((_, i) => (
-                <li key={i} className={`page-item ${currentPage === i + 1 ? "active" : ""}`}>
-                  <button className="page-link" onClick={() => handlePageChange(i + 1)}>
-                    {i + 1}
-                  </button>
-                </li>
-              ))}
-              <li className={`page-item ${currentPage === totalPages && "disabled"}`}>
-                <button className="page-link" onClick={() => handlePageChange(currentPage + 1)}>
-                  Next
-                </button>
-              </li>
-            </ul>
-          </nav>
         </div>
       </div>
 
-      {/* Add Product Modal */}
+      {/* Add Product Modal + Edit Product Modal (keep your existing ones) */}
+         {/* Add Product Modal */}
       <div className="modal fade" id="addProductModal" tabIndex="-1" aria-labelledby="addProductModalLabel" aria-hidden="true">
         <div className="modal-dialog modal-lg">
           <form onSubmit={handleSubmit} method="POST" encType="multipart/form-data">
@@ -689,7 +581,6 @@ const handleDeleteProduct = async (productId) => {
     </form>
   </div>
 </div>
-
     </>
   );
 };

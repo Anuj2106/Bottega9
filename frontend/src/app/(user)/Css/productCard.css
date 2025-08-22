@@ -4,8 +4,8 @@
 
 .section-product-card {
   border-radius: 8px;
-  max-width:300px;
-  min-width: 250px;
+  width: 100%;
+    min-width: 220px;
   overflow: hidden;
   background: white;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -104,3 +104,4 @@
 .carousel-indicators .active {
   background-color: #000;
 }
+

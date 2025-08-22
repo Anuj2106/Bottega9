@@ -46,6 +46,7 @@ const ProductRoute=require('./routes/productRoute');
 app.use('/api',ProductRoute);
 const categoryRoute=require('./routes/categoryRoute');
 app.use('/api',categoryRoute);
+
  
 const orderRoute=require('./routes/orderRoute');
 app.use('/api',orderRoute);

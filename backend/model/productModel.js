@@ -214,4 +214,36 @@ exports.getProductsByCategory = async (cat_id) => {
     });
   });
 };
+exports.searchProducts = (slug, callback) => {
+  const sql = `
+    SELECT 
+      products.*, 
+      category.cat_name,
+      badges.badge_name,
+      GROUP_CONCAT(product_images.img_path) AS images
+    FROM products
+    INNER JOIN category ON products.cat_id = category.cat_id
+    INNER JOIN badges ON products.badge_id = badges.badge_id
+    LEFT JOIN product_images ON products.prod_id = product_images.prod_id
+    WHERE products.slug LIKE ?
+       OR products.prod_name LIKE ?
+       OR products.prod_des LIKE ?
+       OR category.cat_name LIKE ?
+    GROUP BY products.prod_id
+    LIMIT 20
+  `;
+
+  const searchTerm = `%${slug}%`;
+
+  db.query(sql, [searchTerm, searchTerm, searchTerm, searchTerm], (err, results) => {
+    if (err) {
+    
+      return callback(err, null);
+    }
+    callback(null, results);
+  });
+};
+
+
+
 

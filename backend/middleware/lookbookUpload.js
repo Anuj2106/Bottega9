@@ -25,7 +25,7 @@ const fileFilter = (req, file, cb) => {
 const upload = multer({
   storage,
   fileFilter,
-  limits: { fileSize: 5 * 1024 * 1024 }, // Optional: 5MB limit
+  limits: { fileSize: 120 * 1024 * 1024 }, // Optional: 5MB limit
 });
 
 module.exports = upload.single("lookbook_pdf"); // field name in form

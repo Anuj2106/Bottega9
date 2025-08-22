@@ -61,9 +61,9 @@ const apiUrl = process.env.NEXT_PUBLIC_BACKEND_LINK;
                 
                 {/* Left: Text */}
                 <div className="hero-text text-center text-md-start px-4 animate-fade-up">
-                  <h1 className="hero-title display-3 fw-bold mb-4">
+                  <h3 className="hero-title display-3 fw-bold mb-4">
                     {banner.banner_title || 'Our Story'}
-                  </h1>
+                  </h3>
                   <p className="hero-subtitle lead mb-4 animate-fade-up delay-1">
                     {banner.banner_subhead || 'Where artisanal craftsmanship meets modern elegance.'}
                   </p>

@@ -119,30 +119,33 @@ const FilterSidebar = ({
         </div>
 
         {/* Colors */}
-        {availableColors.length > 0 && (
-          <div className="color-filters">
-            <h6 className="filter-section-title">Colors</h6>
-            {availableColors.map((color, idx) => (
-              <div className="color-option" key={idx}>
-                <input
-                  type="checkbox"
-                  id={`color-${idx}`}
-                  checked={selectedColors.includes(color)}
-                  onChange={() =>
-                    toggleSelection(color, selectedColors, setSelectedColors)
-                  }
-                />
-                <div
-                  className="color-preview"
-                  style={{ backgroundColor: color }}
-                />
-                <label htmlFor={`color-${idx}`} className="color-name">
-                  {color}
-                </label>
-              </div>
-            ))}
-          </div>
-        )}
+      {availableColors.filter(color => color?.trim()).length > 0 && (
+  <div className="color-filters">
+    <h6 className="filter-section-title">Colors</h6>
+    {availableColors
+      .filter(color => color?.trim()) // ✅ remove null/empty values
+      .map((color, idx) => (
+        <div className="color-option" key={idx}>
+          <input
+            type="checkbox"
+            id={`color-${idx}`}
+            checked={selectedColors.includes(color)}
+            onChange={() =>
+              toggleSelection(color, selectedColors, setSelectedColors)
+            }
+          />
+          <div
+            className="color-preview"
+            style={{ backgroundColor: color }}
+          />
+          <label htmlFor={`color-${idx}`} className="color-name">
+            {color}
+          </label>
+        </div>
+      ))}
+  </div>
+)}
+
 
         {/* Badges */}
         {availableBadges.length > 0 && (

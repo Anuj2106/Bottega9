@@ -4,8 +4,10 @@
 
 .horizontal-scroll-wrapper {
   display: flex;
+  flex-wrap: nowrap;       /* ✅ Prevent wrapping */
   gap: 1rem;
-  overflow-x: auto;
+  overflow-x: auto;        /* ✅ Allow horizontal scroll */
+  overflow-y: hidden;      /* ✅ Hide vertical overflow */
   scroll-snap-type: x mandatory;
   padding-bottom: 10px;
 
@@ -16,6 +18,7 @@
 .horizontal-scroll-wrapper::-webkit-scrollbar {
   display: none;               /* Chrome, Safari */
 }
+
 
 .horizontal-scroll-wrapper::-webkit-scrollbar-thumb {
   background-color: var(--brand);

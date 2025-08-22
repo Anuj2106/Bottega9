@@ -74,7 +74,7 @@ const ProductCard = ({ products = [] }) => {
                               src={`${apiUrl}/uploads/product_images/${imgUrl}`}
                               width={500}
                               height={500}
-                              className="d-block w-100 product-img"
+                              className="d-block w-100 product-img img-fluid"
                               alt={`Product ${index + 1}`}
                               unoptimized
                             />
@@ -135,16 +135,17 @@ const ProductCard = ({ products = [] }) => {
                         )}
                       </div>
 
-                      <button
+                     
+                    </div>
+                     <button
                         onClick={(e) => {
                           e.preventDefault();
                           addToCart(product.prod_id);
                         }}
-                        className="btn btn-brand btn-sm rounded-pill px-3"
+                        className="btn  text-center btn-brand w-75 btn-sm rounded-pill px-3"
                       >
                         Add to Cart
                       </button>
-                    </div>
                   </div>
 
                 </div>
