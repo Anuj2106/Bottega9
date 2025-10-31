@@ -3,6 +3,7 @@ import { useCart } from "@/app/Context/cart/cartContext";
 import Image from "next/image";
 import "../Css/cart.css"
 
+const api = process.env.NEXT_PUBLIC_BACKEND_LINK;
 const CartPage = () => {
   const { cart, updateQuantity, removeFromCart, clearCart } = useCart();
 
@@ -12,6 +13,11 @@ const CartPage = () => {
       : item.prod_price;
     return sum + price * item.quantity;
   }, 0);
+
+  const handleProceedToCheckout = () => {
+  // Navigate to checkout page or payment
+  window.location.href = "/Checkout";
+};
 
   return (
     <main className="cart-page luxury-bg container my-5">
@@ -33,17 +39,22 @@ const CartPage = () => {
               >
                 {/* Product Image */}
                 <div className="cart-item-image position-relative mb-3 mb-sm-0" style={{ width: 120, minWidth: 120 }}>
-                  <Image
-                    src={item.images && item.images.length > 0
-                      ? (typeof item.images === 'string' ? item.images.split(',')[0] : item.images[0]) 
-                      : "/placeholder.png"}
-                    alt={item.prod_name}
-                    width={120}
-                    height={120}
-                    className="rounded cart-img"
-                    style={{ objectFit: "cover" }}
-                    unoptimized
-                  />
+                 <Image
+  src={
+    item.images && item.images.length > 0
+      ? (typeof item.images === "string"
+          ? `${api}/uploads/product_images/${item.images.split(",")[0]}`
+          : `${api}/uploads/product_images/${item.images[0]}`
+        )
+      : "/placeholder.png"
+  }
+  alt={item.prod_name}
+  width={120}
+  height={120}
+  className="rounded cart-img"
+  style={{ objectFit: "cover" }}
+  unoptimized
+/>
                 </div>
 
                 {/* Product Details */}
@@ -130,7 +141,14 @@ const CartPage = () => {
               <span>Total</span>
               <span>₹{subtotal.toFixed(2)}</span>
             </div>
-            <button className="btn btn-gold w-100 py-3 fw-semibold mb-2">Proceed to Checkout</button>
+            <button 
+  className="btn btn-gold w-100 py-3 fw-semibold mb-2 d-flex justify-content-center align-items-center gap-2"
+  onClick={() => handleProceedToCheckout()} // Add your click handler
+>
+  <span>Proceed to Checkout</span>
+  <i className="bi bi-arrow-right"></i> {/* Optional Bootstrap Icon */}
+</button>
+
             <button className="btn btn-outline-gold w-100 py-2">Continue Shopping</button>
           </div>
         </aside>

@@ -1,30 +1,39 @@
 :root {
-  --gold: #C7A76D;
+  --contact-bg: #f9f9f9; /* light gray/white background */
+  --contact-border: #000; /* black border */
+  --contact-text: #000;   /* black text */
+  --contact-btn-bg: #000; /* black button */
+  --contact-btn-text: #fff; /* white text */
 }
 
 .contact-info-card {
-  background: #fffbea;
-  border-left: 4px solid var(--gold);
+  background: var(--contact-bg);
+  border-left: 4px solid var(--contact-border);
   padding: 1rem;
   border-radius: 6px;
   margin-bottom: 1rem;
+  color: var(--contact-text);
 }
 .contact-info-card h5 {
   margin-top: 0.5rem;
   font-size: 1.1rem;
+  color: var(--contact-text);
 }
-.icon-gold {
-  color: var(--gold);
+
+.icon-black {
+  color: var(--contact-border);
   width: 24px;
   height: 24px;
 }
 
-.contact-form .btn-gold {
-  background: var(--gold);
-  color: white;
+.contact-form .btn-black {
+  background: var(--contact-btn-bg);
+  color: var(--contact-btn-text);
+  border: none;
+  transition: background 0.3s ease;
 }
-.contact-form .btn-gold:hover {
-  background: #b7955d;
+.contact-form .btn-black:hover {
+  background: #333; /* slightly lighter black */
 }
 
 .map-section {

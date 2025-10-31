@@ -92,7 +92,7 @@ const ContactPage = () => {
                 <textarea name="message" value={formData.message}
                   onChange={handleChange} className="form-control" rows="5" required />
               </div>
-              <button type="submit" className="btn btn-gold px-4 py-2 fw-semibold">Send Message</button>
+              <button type="submit" className="btn btn-dark px-4 py-2 fw-semibold">Send Message</button>
               {status && <p className="mt-3">{status}</p>}
             </form>
           </div>

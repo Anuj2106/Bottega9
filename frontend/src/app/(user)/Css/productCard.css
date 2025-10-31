@@ -1,107 +1,362 @@
-:root {
-  --brand: black; /* Gold */
+/* West Elm Product Cards - Bootstrap Enhanced */
+.westelm-products-section {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 20px;
 }
 
-.section-product-card {
-  border-radius: 8px;
-  width: 100%;
-    min-width: 220px;
-  overflow: hidden;
-  background: white;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-.section-product-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+.westelm-products-grid {
+  gap: 30px 20px;
+  padding: 20px 0;
 }
 
-.image-container {
-  position: relative;
-  overflow: hidden;
-}
-.product-img {
-  height: 280px;
-  object-fit: cover;
-  transition: transform 0.4s ease;
-}
-.section-product-card:hover .product-img {
-  transform: scale(1.05);
-}
-
-.product-badge {
-  background: var(--brand);
-  color: white;
-  font-size: 0.7rem;
-  padding: 4px 8px;
-  border-radius: 50px;
-  position: absolute;
-  top: 8px;
-  left: 8px;
-  z-index: 2;
-}
-
-.wishlist-btn {
-  background: white;
-  border: 1px solid var(--brand);
-  border-radius: 50%;
-  padding: 4px;
-  position: absolute;
-  top: 8px;
-  right: 8px;
-  z-index: 2;
-  transition: background 0.3s;
-}
-.wishlist-btn:hover {
-  background: var(--brand);
-}
-.wishlist-btn:hover svg {
-  color: white;
-}
-
-.product-name {
-  font-size: 1rem;
-  font-weight: 600;
-}
-.product-desc {
-  font-size: 0.85rem;
-  color: #666;
-}
-
-.color-swatch {
-  width: 18px;
-  height: 18px;
-  border-radius: 50%;
-  border: 1px solid #ccc;
-}
-
-.price-new {
-  font-weight: 600;
-  font-size: 1rem;
-}
-.price-old {
-  font-size: 0.85rem;
-  color: #888;
-  text-decoration: line-through;
-  margin-left: 4px;
-}
-
-.btn-brand {
-  background: var(--brand);
-  color: white;
+/* Product Card - Bootstrap handles most styling */
+.westelm-product-card {
+  background: #fff;
+  color: black;
   border: none;
-}
-.btn-brand:hover {
-  background: #b7955d;
+  position: relative;
+  transition: none;
 }
 
-/* Carousel dots */
-.carousel-indicators [data-bs-target] {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background-color: var(--brand);
+/* Image Container */
+.westelm-product-image-container {
+  width: 100%;
+  aspect-ratio: 1;
+  margin-bottom: 15px;
+  overflow: hidden;
+  background: #f8f8f8;
 }
-.carousel-indicators .active {
-  background-color: #000;
+
+.westelm-product-link {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.westelm-image-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.westelm-product-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: opacity 0.3s ease;
+}
+
+.westelm-primary-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 1;
+}
+
+.westelm-secondary-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0;
+}
+
+/* Hover Effect for Image Swap */
+.westelm-product-card:hover .westelm-primary-image {
+  opacity: 0;
+}
+
+.westelm-product-card:hover .westelm-secondary-image {
+  opacity: 1;
+}
+
+/* Badge - Override Bootstrap badge */
+.westelm-badge {
+  top: 10px !important;
+  left: 10px !important;
+  background: #fff !important;
+  color: #000 !important;
+  padding: 4px 8px;
+  font-size: 12px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  z-index: 2;
+  border: 1px solid #ddd;
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+}
+
+/* Wishlist Button - Override Bootstrap btn */
+.westelm-wishlist-btn {
+  top: 10px !important;
+  right: 10px !important;
+  background: rgba(255, 255, 255, 0.9) !important;
+  border: none !important;
+  border-radius: 50% !important;
+  width: 36px;
+  height: 36px;
+  padding: 0 !important;
+  z-index: 2;
+  transition: background-color 0.2s ease;
+}
+
+.westelm-wishlist-btn:hover {
+  background: rgba(255, 255, 255, 1) !important;
+}
+
+/* Quick View Button */
+.westelm-quick-view-btn {
+  bottom: 15px !important;
+  left: 50% !important;
+  transform: translateX(-50%);
+  background: rgba(255, 255, 255, 0.95) !important;
+  border: 1px solid #000 !important;
+  color: #000 !important;
+  padding: 8px 16px !important;
+  font-size: 12px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 2;
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+}
+
+.westelm-product-card:hover .westelm-quick-view-btn {
+  opacity: 1;
+}
+
+.westelm-quick-view-btn:hover {
+  background: #000 !important;
+  color: #fff !important;
+}
+
+/* Product Info */
+.westelm-product-info {
+  padding: 0;
+  text-align: left;
+}
+
+.westelm-product-name {
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.4;
+  color: #000;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+.westelm-product-name a {
+  color: inherit;
+}
+
+.westelm-product-name a:hover {
+  text-decoration: underline !important;
+}
+
+/* Color Swatches */
+.westelm-color-swatches {
+  gap: 4px;
+  margin-bottom: 8px;
+  min-height: 20px;
+}
+
+.westelm-color-swatch {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 1px solid #ddd;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.westelm-color-swatch:hover {
+  transform: scale(1.1);
+}
+
+.westelm-more-colors {
+  font-size: 12px;
+  color: #666;
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+}
+
+/* Pricing */
+.westelm-price-container {
+  margin-bottom: 12px;
+}
+
+.westelm-price {
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  color: #000;
+  letter-spacing: 0;
+}
+
+.westelm-sale-price {
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  color: #000;
+  letter-spacing: 0;
+}
+
+.westelm-original-price {
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  color: #666;
+  letter-spacing: 0;
+}
+
+/* Add to Cart Button - Override Bootstrap btn */
+.westelm-add-to-cart {
+  background: #000 !important;
+  color: #fff !important;
+  border: none !important;
+  padding: 10px 16px !important;
+  font-size: 12px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  gap: 6px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+}
+
+.westelm-product-card:hover .westelm-add-to-cart {
+  opacity: 1;
+}
+
+.westelm-add-to-cart:hover {
+  background: #333 !important;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .westelm-products-grid {
+    gap: 20px 15px;
+    padding: 15px 0;
+  }
+
+  .westelm-product-name {
+    font-size: 13px;
+  }
+
+  .westelm-price,
+  .westelm-sale-price {
+    font-size: 14px;
+  }
+
+  .westelm-original-price {
+    font-size: 12px;
+  }
+
+  /* Remove hover effects on mobile */
+  .westelm-product-card:hover .westelm-primary-image {
+    opacity: 1;
+  }
+
+  .westelm-product-card:hover .westelm-secondary-image {
+    opacity: 0;
+  }
+
+  /* .westelm-quick-view-btn, */
+  .westelm-add-to-cart {
+    display: none !important;
+  }
+
+  .westelm-badge {
+    font-size: 11px;
+    padding: 3px 6px;
+  }
+
+  .westelm-wishlist-btn {
+    width: 32px !important;
+    height: 32px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .westelm-products-section {
+    padding: 0 15px;
+  }
+
+  .westelm-product-name {
+    font-size: 12px;
+    line-height: 1.3;
+  }
+
+  .westelm-price,
+  .westelm-sale-price {
+    font-size: 13px;
+  }
+
+  .westelm-color-swatches {
+    gap: 3px;
+  }
+
+  .westelm-color-swatch {
+    width: 14px;
+    height: 14px;
+  }
+}
+
+/* Large screens - Override Bootstrap grid */
+@media (min-width: 1200px) {
+  .westelm-products-grid .westelm-product-card {
+    flex: 0 0 auto;
+    width: 23%;
+  }
+}
+
+@media (min-width: 1440px) {
+  .westelm-products-grid .westelm-product-card {
+    width: 18.4%;
+  }
+}
+
+/* Performance optimizations */
+.westelm-product-image {
+  will-change: opacity;
+}
+
+/* Accessibility */
+.westelm-wishlist-btn:focus,
+.westelm-quick-view-btn:focus,
+.westelm-add-to-cart:focus {
+  outline: 2px solid #005fcc;
+  outline-offset: 2px;
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .westelm-product-image,
+  /* .westelm-quick-view-btn, */
+  .westelm-add-to-cart {
+    transition: none;
+  }
+}
+@media (max-width: 567px) {
+  .westelm-products-grid .westelm-product-card {
+    width: 100%;
+  }
+}
+
+@media (min-width: 567px) and (max-width: 767px) {
+  .westelm-products-grid .westelm-product-card {
+    width: 47%;
+  }
+}
+
+@media (min-width: 768px) {
+  .westelm-products-grid .westelm-product-card {
+    width: 31.3333%;
+  }
 }
 

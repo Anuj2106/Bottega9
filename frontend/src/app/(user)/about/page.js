@@ -123,8 +123,8 @@ const AboutPage = () => {
             Ready to transform your space? Get in touch and let's make it happen.
           </p>
           <div className="d-flex flex-column flex-sm-row justify-content-center gap-3">
-            <Link className="btn btn-gold btn-lg fw-semibold" href="/contact">Start Your Project</Link>
-            <a className="btn btn-outline-gold btn-lg fw-semibold" href="#">View Our Work</a>
+            <Link className="btn btn-dark btn-lg fw-semibold" href="/contact">Start Your Project</Link>
+            <a className="btn btn-dark btn-lg fw-semibold" href="#">View Our Work</a>
           </div>
         </div>
       </section>

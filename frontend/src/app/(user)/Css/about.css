@@ -1,32 +1,51 @@
-/* Luxury theme colors */
+/* Minimal Black & White Theme */
 :root {
-  --gold: #C7A76D;
+  --black: #000000;
+  --white: #ffffff;
 }
 
-.text-gold {
-  color: var(--gold);
+/* Text & Border */
+.text-dark {
+  color: var(--black) !important;
 }
-.border-gold {
-  border-color: var(--gold) !important;
+.text-light {
+  color: var(--white) !important;
 }
-.btn-gold {
-  background-color: var(--gold);
-  color: #fff;
+.border-dark {
+  border-color: var(--black) !important;
+}
+.border-light {
+  border-color: var(--white) !important;
+}
+
+/* Buttons */
+.btn-dark {
+  background-color: var(--black);
+  color: var(--white);
   border: none;
 }
-.btn-gold:hover {
-  background-color: #b7955d;
-}
-.btn-outline-gold {
-  border: 2px solid var(--gold);
-  color: var(--gold);
-}
-.btn-outline-gold:hover {
-  background-color: var(--gold);
-  color: #fff;
+.btn-dark:hover {
+  background-color: #222; /* slightly lighter black */
 }
 
+.btn-light {
+  background-color: var(--white);
+  color: var(--black);
+  border: 1px solid var(--black);
+}
+.btn-light:hover {
+  background-color: #f2f2f2;
+}
 
+.btn-outline-dark {
+  border: 2px solid var(--black);
+  color: var(--black);
+  background-color: transparent;
+}
+.btn-outline-dark:hover {
+  background-color: var(--black);
+  color: var(--white);
+}
 
 /* Hover effects */
 .hover-scale {
@@ -36,7 +55,7 @@
   transform: scale(1.05);
 }
 
-/* Service Overlay */
+/* Service Overlay (black background with white text) */
 .service-card img {
   transition: transform 0.5s ease;
 }
@@ -46,9 +65,10 @@
 .service-overlay {
   position: absolute;
   inset: 0;
-  background: rgba(0,0,0,0.65);
+  background: rgba(0, 0, 0, 0.8); /* black overlay */
   opacity: 0;
   transition: opacity 0.4s ease;
+  color: var(--white);
 }
 .service-card:hover .service-overlay {
   opacity: 1;
@@ -70,6 +90,7 @@
     transform: translateY(0);
   }
 }
+
 .animate-fade-left {
   opacity: 0;
   transform: translateX(30px);
@@ -81,6 +102,7 @@
     transform: translateX(0);
   }
 }
+
 .animate-fade-right {
   opacity: 0;
   transform: translateX(-30px);

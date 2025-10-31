@@ -42,7 +42,7 @@ const Navbar = () => {
           </li>
 
           {/* Messages Dropdown */}
-          <li className="nav-item dropdown">
+          {/* <li className="nav-item dropdown">
             <a className="nav-link" data-bs-toggle="dropdown" href="#">
               <MessageCircle size={18} />
               <span className="navbar-badge badge text-bg-danger">3</span>
@@ -72,10 +72,10 @@ const Navbar = () => {
               <div className="dropdown-divider"></div>
               <a href="#" className="dropdown-item dropdown-footer">See All Messages</a>
             </div>
-          </li>
+          </li> */}
 
           {/* Notifications Dropdown */}
-          <li className="nav-item dropdown">
+          {/* <li className="nav-item dropdown">
             <a className="nav-link" data-bs-toggle="dropdown" href="#">
               <Bell size={18} />
               <span className="navbar-badge badge text-bg-warning">15</span>
@@ -83,9 +83,9 @@ const Navbar = () => {
             <div className="dropdown-menu dropdown-menu-lg dropdown-menu-end">
               <span className="dropdown-item dropdown-header">15 Notifications</span>
               <div className="dropdown-divider"></div>
-              <a href="#" className="dropdown-item">
+              <a href="#" className="dropdown-item"> */}
                 {/* <Envelope size={16} className="me-2" /> 4 new messages */}
-                <span className="float-end text-secondary fs-7">3 mins</span>
+                {/* <span className="float-end text-secondary fs-7">3 mins</span>
               </a>
               <div className="dropdown-divider"></div>
               <a href="#" className="dropdown-item">
@@ -100,7 +100,7 @@ const Navbar = () => {
               <div className="dropdown-divider"></div>
               <a href="#" className="dropdown-item dropdown-footer">See All Notifications</a>
             </div>
-          </li>
+          </li> */}
 
           {/* Fullscreen Toggle */}
           <li className="nav-item">

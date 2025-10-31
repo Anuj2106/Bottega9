@@ -1,6 +1,8 @@
 const Products = require('../model/productModel');
 const Categories = require('../model/categoryModel');
+const Subcategory=require('../model/subcategoryModel')
 const Badges = require('../model/badgeModel');
+const Items=require('../model/itemmodel')
 const db = require('../config/db');
 const slugify = require('slugify'); // ✅ Add this package (npm i slugify)
 
@@ -20,9 +22,12 @@ exports.index = (req, res) => {
         return res.status(500).send('Internal Server Error');
       }
 
+     
       res.json({
         products: products,
-        categories: categories
+        categories: categories,
+
+        
       });
     });
   });
@@ -34,31 +39,52 @@ exports.index = (req, res) => {
 exports.show = (req, res) => {
   Products.getAll((err, products) => {
     if (err) {
-      console.error('Error fetching products:', err);
-      return res.status(500).send('Internal Server Error');
+      console.error("Error fetching products:", err);
+      return res.status(500).send("Internal Server Error");
     }
 
     Categories.getAllCategories((err, categories) => {
       if (err) {
-        console.error('Error fetching categories:', err);
-        return res.status(500).send('Internal Server Error');
+        console.error("Error fetching categories:", err);
+        return res.status(500).send("Internal Server Error");
       }
 
       Badges.getBadges((err, badges) => {
         if (err) {
-          console.error('Error fetching badges:', err);
-          return res.status(500).send('Internal Server Error');
+          console.error("Error fetching badges:", err);
+          return res.status(500).send("Internal Server Error");
         }
 
-        res.json({
-          products,
-          categories,
-          badges
+        Subcategory.getActive((err, subcategory) => {
+          if (err) {
+            console.error("Error fetching subcategories:", err);
+            return res.status(500).send("Internal Server Error");
+          }
+
+          Items.getActive((err, items) => {
+            if (err) {
+              console.error("Error fetching items:", err);
+              return res.status(500).send("Internal Server Error");
+            }
+           
+            
+
+            // ✅ Send response only after all queries are done
+            res.json({
+              products,
+              categories,
+              badges,
+              subcategory,
+              items, // <-- include active items here
+            });
+          });
         });
       });
     });
   });
 };
+
+
 
 /**
  * Add product with slug + new fields + multiple images
@@ -74,6 +100,7 @@ exports.addproduct = (req, res) => {
     prodoffer_prize: req.body.prodoffer_prize,
     stock_quantity: req.body.stock_quantity || 0,
     category_id: req.body.category_id,
+    sub_id: req.body.subcategory_id || null,
     badge_id: req.body.badge_id || null,
     prod_status: req.body.prod_status,
     prod_review: req.body.prod_review || 0,
@@ -116,9 +143,14 @@ exports.updateProduct = (req, res) => {
   const productId = req.params.id;
   const productData = { ...req.body };
 
-  // If product name changed, regenerate slug
+  // Regenerate slug if product name changes
   if (productData.prod_name) {
     productData.slug = slugify(productData.prod_name, { lower: true, strict: true });
+  }
+
+  // Normalize prod_color if sent as array
+  if (Array.isArray(productData.prod_color)) {
+    productData.prod_color = productData.prod_color.join(', ');
   }
 
   Products.updateProductById(productId, productData, (err) => {
@@ -127,13 +159,13 @@ exports.updateProduct = (req, res) => {
       return res.status(500).json({ error: "Internal Server Error" });
     }
 
-    // If new images uploaded
+    // Handle new images if uploaded
     if (req.files && req.files.length > 0) {
       const imageValues = req.files.map(file => [productId, file.filename]);
       const insertImagesQuery = "INSERT INTO product_images (prod_id, img_path) VALUES ?";
       db.query(insertImagesQuery, [imageValues], (imgErr) => {
         if (imgErr) {
-          console.error("Error updating images:", imgErr);
+          console.error("Error inserting images:", imgErr);
         }
       });
     }

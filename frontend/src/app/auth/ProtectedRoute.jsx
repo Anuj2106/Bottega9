@@ -8,15 +8,16 @@ export default function ProtectedRoute({ children, blockedRoles = [] }) {
 
   useEffect(() => {
     if (!loading) {
-      // ✅ Redirect if logged in AND (role missing OR role is blocked)
-      if (
-        isAuthenticated &&
-        user &&
-        (user.role_id === undefined || blockedRoles.includes(user.role_id))
-      ) {
+      // 🚫 Guest user → redirect to login
+      if (!isAuthenticated) {
         router.push("/");
-        console.log("hello i am routes");
-        
+        return;
+      }
+
+      // 🚫 Authenticated but blocked role
+      if (!user?.role_id || blockedRoles.includes(user.role_id)) {
+        router.push("/");
+        return;
       }
     }
   }, [isAuthenticated, loading, user, router, blockedRoles]);

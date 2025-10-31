@@ -56,7 +56,7 @@ export const AuthProvider = ({ children }) => {
 
   const checkAuth = async () => {
     try {
-      const res = await axios.get(`${apiUrl}/api/checks-ession`, { withCredentials: true });
+      const res = await axios.get(`${apiUrl}/api/checksession`, { withCredentials: true });
       setUser(res.data.user);
         SetuserId(res.data.user.user_id);
       setIsAuthenticated(true);

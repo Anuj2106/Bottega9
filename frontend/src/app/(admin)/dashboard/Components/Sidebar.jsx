@@ -6,6 +6,8 @@ import {
   LayoutDashboard,
   Users,
   Box,
+  Grid,
+  ShoppingBag,
   Image as ImageIcon,
   List,
   ShoppingCart,
@@ -91,6 +93,18 @@ export default function Sidebar() {
         <p>Category</p>
       </Link>
     </li>
+    <li className="nav-item">
+      <Link href="/dashboard/subcat" className="nav-link">
+        <List size={16} className="nav-icon me-2" />
+        <p>Subcategory</p>
+      </Link>
+    </li>
+    <li className="nav-item">
+      <Link href="/dashboard/items" className="nav-link">
+        <List size={16} className="nav-icon me-2" />
+        <p>Items</p>
+      </Link>
+    </li>
   </ul>
 </li>
 
@@ -121,35 +135,64 @@ export default function Sidebar() {
             </li>
 
             {/* Content */}
-            <li className="nav-item has-treeview">
-              <a href="#" className="nav-link">
-                <LayoutDashboard className="nav-icon me-2" size={16} />
-                <p>
-                  Content
-                   <ChevronRight className="nav-arrow" />
-                </p>
-              </a>
-              <ul className="nav nav-treeview">
-                <li className="nav-item">
-                  <Link href="/dashboard/banners" className="nav-link">
-                    <ImageIcon className="nav-icon me-2" size={16} />
-                    <p>Banners</p>
-                  </Link>
-                </li>
-                <li className="nav-item">
-                  <Link href="/dashboard/lookbook" className="nav-link">
-                    <Home className="nav-icon me-2" size={16} />
-                    <p>Lookbook</p>
-                  </Link>
-                </li>
-                <li className="nav-item">
-                  <Link href="/dashboard/testimonials" className="nav-link">
-                    <MessageCircle className="nav-icon me-2" size={16} />
-                    <p>Testimonials</p>
-                  </Link>
-                </li>
-              </ul>
-            </li>
+         <li className="nav-item has-treeview">
+  <a href="#" className="nav-link">
+    <LayoutDashboard className="nav-icon me-2" size={16} />
+    <p>
+      Content
+      <ChevronRight className="nav-arrow" />
+    </p>
+  </a>
+  
+  <ul className="nav nav-treeview">
+    {/* Existing Content Items */}
+    <li className="nav-item">
+      <Link href="/dashboard/banners" className="nav-link">
+        <ImageIcon className="nav-icon me-2" size={16} />
+        <p>Banners</p>
+      </Link>
+    </li>
+    <li className="nav-item">
+      <Link href="/dashboard/lookbook" className="nav-link">
+        <Home className="nav-icon me-2" size={16} />
+        <p>Lookbook</p>
+      </Link>
+    </li>
+    <li className="nav-item">
+      <Link href="/dashboard/testimonials" className="nav-link">
+        <MessageCircle className="nav-icon me-2" size={16} />
+        <p>Testimonials</p>
+      </Link>
+    </li>
+
+    {/* Home Dropdown Nested Inside Content */}
+    <li className="nav-item has-treeview">
+      <a href="#" className="nav-link">
+        <LayoutDashboard className="nav-icon me-2" size={16} />
+        <p>
+          Home
+          <ChevronRight className="nav-arrow" />
+        </p>
+      </a>
+      <ul className="nav nav-treeview">
+        <li className="nav-item">
+          <Link href="/dashboard/featuredcategory" className="nav-link">
+            <Grid className="nav-icon me-2" size={16} />
+            <p>Featured Categories</p>
+          </Link>
+        </li>
+        <li className="nav-item">
+          <Link href="/dashboard/featured-products" className="nav-link">
+            <ShoppingBag className="nav-icon me-2" size={16} />
+            <p>Featured Products</p>
+          </Link>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</li>
+
+
 
             {/* Settings */}
             <li className="nav-item">

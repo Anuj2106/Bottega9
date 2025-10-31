@@ -1,6 +1,7 @@
 'use client';
 import { Range } from 'react-range';
 import { useState, useEffect } from 'react';
+import "../Css/filter.css"
 
 const FilterSidebar = ({
   globalMin, globalMax, values, setValues,
@@ -9,6 +10,13 @@ const FilterSidebar = ({
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [selectedColors, setSelectedColors] = useState([]);
   const [selectedBadges, setSelectedBadges] = useState([]);
+  const [expandedSections, setExpandedSections] = useState({
+    categories: false,
+    category: true,
+    productType: true,
+    product: false,
+    collection: false
+  });
 
   const [availableColors, setAvailableColors] = useState([]);
   const [availableBadges, setAvailableBadges] = useState([]);
@@ -35,159 +43,219 @@ const FilterSidebar = ({
     );
   };
 
-  return (
-    <div className="offcanvas offcanvas-start" id="filterOffcanvas" tabIndex={-1}>
-      <div className="offcanvas-header">
-        <h5 className="offcanvas-title">Filters</h5>
-        <button type="button" className="btn-close" data-bs-dismiss="offcanvas" />
-      </div>
-      <div className="offcanvas-body">
+  const toggleSection = (section) => {
+    setExpandedSections(prev => ({
+      ...prev,
+      [section]: !prev[section]
+    }));
+  };
 
-        {/* Categories */}
-        {categories.length > 0 && (
-          <div className="category-filters">
-            <h6 className="filter-section-title">Categories</h6>
-            {categories.map(cat => (
-              <div className="filter-checkbox" key={cat.cat_id}>
-                <input
-                  type="checkbox"
-                  id={`cat-${cat.cat_id}`}
-                  checked={selectedCategories.includes(cat.cat_id)}
-                  onChange={() =>
-                    toggleSelection(cat.cat_id, selectedCategories, setSelectedCategories)
-                  }
-                />
-                <label htmlFor={`cat-${cat.cat_id}`}>
-                  {cat.cat_name}
-                </label>
-              </div>
-            ))}
+  return (
+    <aside className="westelm-filter-sidebar">
+      {/* Categories Section */}
+      <div className="filter-group">
+        <h3 className="filter-group-title">Categories</h3>
+        <div className="category-links">
+          <div className="category-link">
+            <span>Bedding By Material</span>
+            <span className="expand-icon">+</span>
+          </div>
+          <div className="category-link">
+            <span>Bed Linen</span>
+            <span className="expand-icon">+</span>
+          </div>
+          <div className="category-link">
+            <span>Pillows & Throws</span>
+            <span className="expand-icon">+</span>
+          </div>
+          <div className="category-link">
+            <span>Bath Linen & Accessories</span>
+            <span className="expand-icon">+</span>
+          </div>
+          <div className="category-link">
+            <span>Bedding Essentials</span>
+            <span className="expand-icon">+</span>
+          </div>
+        </div>
+      </div>
+
+      {/* Category Filter */}
+      <div className="filter-group">
+        <div 
+          className="filter-section-header"
+          onClick={() => toggleSection('category')}
+        >
+          <h3 className="filter-section-title">Category</h3>
+          <span className="toggle-icon">{expandedSections.category ? '−' : '+'}</span>
+        </div>
+        {expandedSections.category && (
+          <div className="filter-options">
+            <label className="filter-checkbox">
+              <input type="checkbox" />
+              <span className="checkmark"></span>
+              <span className="option-text">Bedding & Bath</span>
+            </label>
           </div>
         )}
+      </div>
 
-        {/* Price Range */}
-        <div className="price-range-section">
-          <h6 className="filter-section-title">Price Range</h6>
-          <Range
-            step={1}
-            min={globalMin}
-            max={globalMax}
-            values={values}
-            onChange={setValues}
-            renderTrack={({ props, children }) => {
-              const { key, ...rest } = props;
-              return (
-                <div
-                  key={key}
-                  {...rest}
-                  style={{
-                    ...rest.style,
-                    height: '6px',
-                    background: 'var(--gold, #d4af37)',
-                    borderRadius: '3px',
-                    display: 'flex',
-                    alignItems: 'center'
-                  }}
-                >
-                  {children}
-                </div>
-              );
-            }}
-            renderThumb={({ props }) => {
-              const { key, ...rest } = props;
-              return (
-                <div
-                  key={key}
-                  {...rest}
-                  style={{
-                    height: '20px',
-                    width: '20px',
-                    borderRadius: '50%',
-                    backgroundColor: 'white',
-                    border: '3px solid var(--gold, #d4af37)',
-                    boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
-                  }}
-                />
-              );
-            }}
-          />
-          <div className="price-display">
-            ₹{values[0]} – ₹{values[1]}
-            <br />
-            <small>Min: ₹{globalMin} • Max: ₹{globalMax}</small>
+      {/* Product Type */}
+      <div className="filter-group">
+        <div 
+          className="filter-section-header"
+          onClick={() => toggleSection('productType')}
+        >
+          <h3 className="filter-section-title">Product Type</h3>
+          <span className="toggle-icon">{expandedSections.productType ? '−' : '+'}</span>
+        </div>
+        {expandedSections.productType && (
+          <div className="filter-options">
+            <label className="filter-checkbox">
+              <input type="checkbox" />
+              <span className="checkmark"></span>
+              <span className="option-text">Bath Linen & Accessories</span>
+            </label>
+            <label className="filter-checkbox">
+              <input type="checkbox" />
+              <span className="checkmark"></span>
+              <span className="option-text">Bed Linen</span>
+            </label>
+            <label className="filter-checkbox">
+              <input type="checkbox" />
+              <span className="checkmark"></span>
+              <span className="option-text">Bedding Essentials</span>
+            </label>
           </div>
+        )}
+      </div>
+
+      {/* Dynamic Shop by Room */}
+      {categories.length > 0 && (
+        <div className="filter-group">
+          <div 
+            className="filter-section-header"
+            onClick={() => toggleSection('categories')}
+          >
+            <h3 className="filter-section-title">Shop by Room</h3>
+            <span className="toggle-icon">{expandedSections.categories ? '−' : '+'}</span>
+          </div>
+          {expandedSections.categories && (
+            <div className="filter-options">
+              {categories.map(cat => (
+                <label key={cat.cat_id} className="filter-checkbox">
+                  <input
+                    type="checkbox"
+                    checked={selectedCategories.includes(cat.cat_id)}
+                    onChange={() =>
+                      toggleSelection(cat.cat_id, selectedCategories, setSelectedCategories)
+                    }
+                  />
+                  <span className="checkmark"></span>
+                  <span className="option-text">{cat.cat_name}</span>
+                </label>
+              ))}
+            </div>
+          )}
         </div>
+      )}
 
-        {/* Colors */}
-      {availableColors.filter(color => color?.trim()).length > 0 && (
-  <div className="color-filters">
-    <h6 className="filter-section-title">Colors</h6>
-    {availableColors
-      .filter(color => color?.trim()) // ✅ remove null/empty values
-      .map((color, idx) => (
-        <div className="color-option" key={idx}>
-          <input
-            type="checkbox"
-            id={`color-${idx}`}
-            checked={selectedColors.includes(color)}
-            onChange={() =>
-              toggleSelection(color, selectedColors, setSelectedColors)
-            }
-          />
-          <div
-            className="color-preview"
-            style={{ backgroundColor: color }}
-          />
-          <label htmlFor={`color-${idx}`} className="color-name">
-            {color}
-          </label>
+      {/* Product */}
+      <div className="filter-group">
+        <div 
+          className="filter-section-header"
+          onClick={() => toggleSection('product')}
+        >
+          <h3 className="filter-section-title">Product</h3>
+          <span className="toggle-icon">{expandedSections.product ? '−' : '+'}</span>
         </div>
-      ))}
-  </div>
-)}
-
-
-        {/* Badges */}
-        {availableBadges.length > 0 && (
-          <div className="badge-filters">
-            <h6 className="filter-section-title">Product Badges</h6>
+        {expandedSections.product && (
+          <div className="filter-options">
             {availableBadges.map((badge, idx) => (
-              <div className="badge-option" key={idx}>
+              <label key={idx} className="filter-checkbox">
                 <input
                   type="checkbox"
-                  id={`badge-${idx}`}
                   checked={selectedBadges.includes(badge)}
                   onChange={() =>
                     toggleSelection(badge, selectedBadges, setSelectedBadges)
                   }
                 />
-                <label htmlFor={`badge-${idx}`} className="badge-text">
-                  {badge}
-                </label>
-              </div>
+                <span className="checkmark"></span>
+                <span className="option-text">{badge}</span>
+              </label>
             ))}
           </div>
         )}
+      </div>
 
-        {/* Apply Filters */}
-        <div className="mt-4">
-          <button
-            className="apply-filter-btn w-100"
-            data-bs-dismiss="offcanvas"
-            onClick={() =>
-              applyFilter(
-                /* sort */ null,
-                /* categories */ selectedCategories,
-                /* colors */ selectedColors,
-                /* badges */ selectedBadges
-              )
-            }
-          >
-            Apply Filters
-          </button>
+      {/* Collection */}
+      <div className="filter-group">
+        <div 
+          className="filter-section-header"
+          onClick={() => toggleSection('collection')}
+        >
+          <h3 className="filter-section-title">Collection</h3>
+          <span className="toggle-icon">{expandedSections.collection ? '−' : '+'}</span>
+        </div>
+        {expandedSections.collection && (
+          <div className="filter-options">
+            {availableColors.map((color, idx) => (
+              <label key={idx} className="filter-checkbox">
+                <input
+                  type="checkbox"
+                  checked={selectedColors.includes(color)}
+                  onChange={() =>
+                    toggleSelection(color, selectedColors, setSelectedColors)
+                  }
+                />
+                <span className="checkmark"></span>
+                <span className="option-text">{color}</span>
+              </label>
+            ))}
+          </div>
+        )}
+      </div>
+
+      {/* Price Range - Always Visible */}
+      <div className="filter-group">
+        <h3 className="filter-section-title">Price Range</h3>
+        <div className="price-range-container">
+         <Range
+  step={1}
+  min={globalMin}
+  max={globalMax}
+  values={values}
+  onChange={setValues}
+  renderTrack={({ props, children }) => (
+    <div {...props} className="price-track">
+      {children}
+    </div>
+  )}
+  renderThumb={({ props }) => {
+    const { key, ...rest } = props; // remove key
+    return <div key={key} {...rest} className="price-thumb" />;
+  }}
+/>
+
+          <div className="price-display">
+            <span>₹{values[0]} – ₹{values[1]}</span>
+          </div>
         </div>
       </div>
-    </div>
+
+      {/* Apply Button */}
+      <button
+        className="apply-filters-btn"
+        onClick={() =>
+          applyFilter(null, selectedCategories, selectedColors, selectedBadges)
+        }
+      >
+        Apply Filters
+      </button>
+
+      <style jsx>{`
+        /* Styles omitted for brevity – see code_file:26 */
+      `}</style>
+    </aside>
   );
 };
 

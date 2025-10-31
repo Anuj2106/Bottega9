@@ -71,13 +71,14 @@ exports.addProduct = (data, callback) => {
       prodoffer_prize,
       stock_quantity,
       cat_id,
+      sub_id,
       badge_id,
       prod_status,
       prod_color,
       prod_dimensions,
       prod_think
     )
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    VALUES (?, ?, ?, ?, ?,?, ?, ?, ?, ?, ?, ?, ?, ?)
   `;
 
   db.query(
@@ -91,6 +92,7 @@ exports.addProduct = (data, callback) => {
       data.prodoffer_prize || null,
       data.stock_quantity || 0,
       data.category_id || null,
+      data.subcategory_id || null,
       data.badge_id || null,
       data.prod_status || 1,
       data.prod_color || null,
@@ -118,6 +120,7 @@ exports.updateProductById = (productId, data, callback) => {
       prodoffer_prize = ?, 
       stock_quantity = ?, 
       cat_id = ?, 
+      sub_id = ?,
       badge_id = ?, 
       prod_status = ?,
       prod_color = ?,
@@ -127,14 +130,15 @@ exports.updateProductById = (productId, data, callback) => {
   `;
 
   const values = [
-    data.prod_name,
-    data.slug, // From controller, regenerated if name changes
-    data.prod_des,
+    data.prod_name || null,
+    data.slug || null,
+    data.prod_des || null,
     data.prod_review || 0,
-    data.prod_price,
+    data.prod_price || 0,
     data.prodoffer_prize || null,
     data.stock_quantity || 0,
-    data.cat_id,
+    data.cat_id || null,
+    data.sub_id || null,        // ✅ matches frontend
     data.badge_id || null,
     data.prod_status || 1,
     data.prod_color || null,
@@ -145,6 +149,7 @@ exports.updateProductById = (productId, data, callback) => {
 
   db.query(sql, values, callback);
 };
+
 
 // =======================
 // Delete Product by ID

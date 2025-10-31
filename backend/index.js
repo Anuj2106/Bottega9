@@ -29,6 +29,14 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Serve static files (Volt Dashboard CSS/JS, etc.)
+app.get("/api/checksession", (req, res) => {
+  if (req.session.user && req.session.user.user_id) {
+    res.status(200).json({ loggedIn: true, user: req.session.user });
+  } else {
+    res.status(200).json({ loggedIn: false }); // ✅ always send response
+  }
+});
+
 app.use(express.static(path.join(__dirname, 'public')));
 
 
@@ -46,6 +54,10 @@ const ProductRoute=require('./routes/productRoute');
 app.use('/api',ProductRoute);
 const categoryRoute=require('./routes/categoryRoute');
 app.use('/api',categoryRoute);
+const subCategory=require('./routes/subcategoryRoute');
+app.use('/api',subCategory);
+const shop=require('./routes/shopRoute');
+app.use('/api/shop',shop);
 
  
 const orderRoute=require('./routes/orderRoute');
@@ -62,14 +74,15 @@ app.use('/api/banner', bannerRoute);
   app.use('/api/wishlist',wishlistRoutes)
   const CartRoutes=require('./routes/cartRoutes');
   app.use('/api/cart',CartRoutes);
+  const featuredcategory=require('./routes/featuredcategoryRoute');
+  app.use('/api/featured-category',featuredcategory)
+ const itemsRoutes= require('./routes/ItemRoutes')
 
-app.get("/api/check-session", (req, res) => {
-  if (req.session.user && req.session.user.user_id) {
-    res.status(200).json({ loggedIn: true, user: req.session.user });
-  } else {
- 
-  }
-});
+// Inside app.use() section
+app.use("/api/items", itemsRoutes);
+
+
+
 
 
 // Start the server

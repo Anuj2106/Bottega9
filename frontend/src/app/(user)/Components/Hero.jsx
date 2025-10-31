@@ -4,15 +4,14 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import Image from 'next/image';
 import { CircleChevronRight, CircleChevronLeft } from 'lucide-react';
-import '../Css/hero.module.css'; // Import the new CSS file
+import Link from 'next/link';
 
 const Hero = ({ Page }) => {
   const [banners, setBanners] = useState([]);
   const [loading, setLoading] = useState(true);
 
-const apiUrl = process.env.NEXT_PUBLIC_BACKEND_LINK;
+  const apiUrl = process.env.NEXT_PUBLIC_BACKEND_LINK;
 
-  
   useEffect(() => {
     const fetchBanners = async () => {
       if (!Page) return;
@@ -28,10 +27,10 @@ const apiUrl = process.env.NEXT_PUBLIC_BACKEND_LINK;
     };
     fetchBanners();
   }, [Page]);
-  
+
   if (loading) {
     return (
-      <section className="hero-section loading d-flex align-items-center justify-content-center">
+      <section className="hero-section d-flex align-items-center justify-content-center" style={{ minHeight: '50vh' }}>
         <p>Loading...</p>
       </section>
     );
@@ -42,78 +41,71 @@ const apiUrl = process.env.NEXT_PUBLIC_BACKEND_LINK;
   }
 
   return (
-    <section className="hero-section container-fluid position-relative d-flex align-items-center">
-      <div className="hero-overlay"></div>
+    <section className="hero-section my-3 position-relative">
       <div
         id="heroCarousel"
-        className="carousel slide w-100"
+        className="carousel slide"
         data-bs-ride="carousel"
-        data-bs-interval="6000"
+        data-bs-interval="5000"
         data-bs-touch="true"
       >
+        {/* Indicators */}
+        <div className="carousel-indicators">
+          {banners.map((_, idx) => (
+            <button
+              key={idx}
+              type="button"
+              data-bs-target="#heroCarousel"
+              data-bs-slide-to={idx}
+              className={idx === 0 ? 'active' : ''}
+              aria-current={idx === 0 ? 'true' : undefined}
+              aria-label={`Slide ${idx + 1}`}
+            />
+          ))}
+        </div>
+
+        {/* Banner Slides */}
         <div className="carousel-inner">
           {banners.map((banner, index) => (
             <div
               key={banner.banner_id || index}
               className={`carousel-item ${index === 0 ? 'active' : ''}`}
             >
-              <div className="hero-container container d-flex flex-column flex-md-row align-items-center justify-content-between py-5 gap-4">
-                
-                {/* Left: Text */}
-                <div className="hero-text text-center text-md-start px-4 animate-fade-up">
-                  <h3 className="hero-title display-3 fw-bold mb-4">
-                    {banner.banner_title || 'Our Story'}
-                  </h3>
-                  <p className="hero-subtitle lead mb-4 animate-fade-up delay-1">
-                    {banner.banner_subhead || 'Where artisanal craftsmanship meets modern elegance.'}
-                  </p>
-                  {(banner.banner_link || banner.banner_btn_text) && (
-                    <a
-                      href={banner.banner_link || '#philosophy'}
-                      className="btn btn-brand btn-lg fw-semibold animate-fade-up delay-2"
+              {banner.banner_img && (
+                <div className="position-relative w-100" style={{ height: '70vh', overflow: 'hidden' }}>
+                  <Image
+                    src={`${apiUrl}/uploads/banner_media/${banner.banner_img}`}
+                    alt={banner.banner_title || 'Banner'}
+                    fill
+                    className="d-block w-100"
+                    style={{ objectFit: 'cover' }}
+                    priority={index === 0}
+                  />
+                  {/* Overlay text */}
+                  {/* <div className="carousel-caption top-50 start-50 translate-middle text-center">
+                    <h1 className="    text-white mb-3">{banner.banner_title}</h1>
+                    {banner.banner_subhead && (
+                      <h3 className="lead text-white mb-4">{banner.banner_subhead}</h3>
+                    )}
+                    <Link
+                      href={`/shop/${banner.banner_page}`}
+                      className="btn btn-dark btn-lg fw-semibold"
                     >
-                      {banner.banner_btn_text || 'Discover Our Philosophy'}
-                    </a>
-                  )}
+
+                      {banner.banner_btn_text || 'Shop Now'}
+                    </Link>
+                  </div> */}
                 </div>
-                
-                {/* Right: Media */}
-                <div className="hero-media px-4 animate-fade-left d-flex align-items-center justify-content-center w-100">
-                  {banner.banner_video ? (
-                    <video
-                      className="hero-video img-fluid rounded-4 shadow-lg hover-scale w-100"
-                      autoPlay
-                      muted
-                      loop
-                      playsInline
-                    >
-                      <source
-                        src={`${apiUrl}/uploads/banner_media/${banner.banner_video}`}
-                        type="video/mp4"
-                      />
-                      Your browser does not support the video tag.
-                    </video>
-                  ) : banner.banner_img ? (
-                    <Image
-                      src={`${apiUrl}/uploads/banner_media/${banner.banner_img}`}
-                      alt={banner.banner_title || 'Banner'}
-                      width={800}
-                      height={600}
-                      className="hero-image img-fluid rounded-4 shadow-lg hover-scale"
-                      priority={index === 0}
-                    />
-                  ) : null}
-                </div>
-              </div>
+              )}
             </div>
           ))}
         </div>
 
         {/* Controls */}
         {banners.length > 1 && (
-          <div>
+          <>
             <button
-              className="carousel-control-prev hero-control"
+              className="carousel-control-prev"
               type="button"
               data-bs-target="#heroCarousel"
               data-bs-slide="prev"
@@ -121,14 +113,14 @@ const apiUrl = process.env.NEXT_PUBLIC_BACKEND_LINK;
               <CircleChevronLeft size={32} color="#fff" />
             </button>
             <button
-              className="carousel-control-next hero-control"
+              className="carousel-control-next"
               type="button"
               data-bs-target="#heroCarousel"
               data-bs-slide="next"
             >
               <CircleChevronRight size={32} color="#fff" />
             </button>
-          </div>
+          </>
         )}
       </div>
     </section>

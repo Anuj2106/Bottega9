@@ -35,11 +35,7 @@ const MobileFooter = () => {
           <small className="footer-label">Wishlist</small>
         </Link>
 
-        {/* Search */}
-        <Link href="/search" className="footer-item text-decoration-none">
-          <Search size={22} />
-          <small className="footer-label">Search</small>
-        </Link>
+       
 
         {/* Cart */}
         <Link

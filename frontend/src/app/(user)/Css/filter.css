@@ -1,0 +1,189 @@
+.westelm-filter-sidebar {
+  background: #fff;
+  border-right: 1px solid #eee;
+  overflow: hidden;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  color: #333;
+  padding: 0;
+  font-size: 13px; /* overall smaller font */
+}
+
+.filter-group {
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.filter-group-title {
+  font-size: 12px;
+  font-weight: 600;
+  color: #666;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin: 0;
+  padding: 16px 20px 10px;
+}
+
+.category-links {
+  padding: 0 20px 16px;
+}
+
+.category-link {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 0;
+  font-size: 13px;
+  color: #444;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.category-link:hover {
+  color: #000;
+}
+
+.expand-icon {
+  font-size: 14px;
+  color: #aaa;
+  font-weight: 300;
+}
+
+.filter-section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 20px;
+  cursor: pointer;
+  background: #fff;
+  transition: background-color 0.2s ease;
+}
+
+.filter-section-header:hover {
+  background: #fafafa;
+}
+
+.filter-section-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: #444;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.toggle-icon {
+  font-size: 16px;
+  color: #aaa;
+  font-weight: 300;
+  transition: transform 0.2s ease;
+}
+
+.filter-options {
+  padding: 0 20px 14px;
+  background: #fff;
+}
+
+.filter-checkbox {
+  display: flex;
+  align-items: center;
+  margin-bottom: 6px;
+  cursor: pointer;
+  font-size: 13px;
+  color: #333;
+  line-height: 1.4;
+  position: relative;
+}
+
+.checkmark {
+  height: 14px;
+  width: 14px;
+  background-color: #fff;
+  border: 1px solid #bbb;
+  border-radius: 2px;
+  margin-right: 10px;
+  transition: all 0.2s ease;
+}
+
+.filter-checkbox input:checked ~ .checkmark {
+  background-color: #000;
+  border-color: #000;
+}
+
+.checkmark:after {
+  left: 4px;
+  top: 1px;
+  width: 3px;
+  height: 7px;
+}
+
+.option-text {
+  flex: 1;
+  font-weight: 400;
+  font-size: 13px;
+}
+
+.price-range-container {
+  padding: 0 20px 16px;
+}
+
+.price-track {
+  height: 3px;
+  background: #e0e0e0;
+  border-radius: 2px;
+  width: 100%;
+  outline: none;
+}
+
+.price-thumb {
+  height: 14px;
+  width: 14px;
+  border-radius: 50%;
+  background: #000;
+  cursor: pointer;
+  border: 2px solid #fff;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+}
+
+.price-display {
+  margin-top: 10px;
+  font-size: 12px;
+  color: #666;
+  text-align: center;
+}
+
+.apply-filters-btn {
+  background: #000;
+  color: #fff;
+  border: none;
+  padding: 10px 16px;
+  width: calc(100% - 40px);
+  margin: 16px 20px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  border-radius: 2px;
+}
+
+.apply-filters-btn:hover {
+  background: #222;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .westelm-filter-sidebar {
+    width: 100%;
+    height: auto;
+    border-right: none;
+  }
+
+  .filter-section-header {
+    padding: 12px 16px;
+  }
+
+  .filter-options,
+  .category-links,
+  .price-range-container {
+    padding: 0 16px 12px;
+  }
+}
