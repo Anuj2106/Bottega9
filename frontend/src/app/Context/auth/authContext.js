@@ -31,6 +31,7 @@ export const AuthProvider = ({ children }) => {
         router.push("/");
       } else {
         router.push("/dashboard");
+     
       }
 
     } catch (error) {

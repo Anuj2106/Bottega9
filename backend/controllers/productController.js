@@ -101,6 +101,7 @@ exports.addproduct = (req, res) => {
     stock_quantity: req.body.stock_quantity || 0,
     category_id: req.body.category_id,
     sub_id: req.body.subcategory_id || null,
+    item_id: req.body.item_id || null,
     badge_id: req.body.badge_id || null,
     prod_status: req.body.prod_status,
     prod_review: req.body.prod_review || 0,

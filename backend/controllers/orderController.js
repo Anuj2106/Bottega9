@@ -1,49 +1,121 @@
 const Order = require('../model/orderModel');
+const { sendOrderConfirmation } = require('../utils/emailServies');
 
-// ✅ Get all orders
-exports.getAllOrders = (req, res) => {
-  Order.getAllOrders((err, results) => {
-    if (err) {
-      console.error("Error fetching orders:", err);
-      return res.status(500).json({ error: "Internal server error" });
-    }
+
+// ============================================
+// 🧍 USER SIDE
+// ============================================
+
+// ✅ Place New Order
+exports.placeOrder = (req, res) => {
+  const {
+    user_id, name, email, contact, address, city, state, zip,
+    items, subtotal, shippingFee, grandTotal,prod_name
+  } = req.body;
+
+  const orderData = {
+    user_id, name, email, contact, address, city, state, zip,
+    subtotal, shipping_fee: shippingFee, grand_total: grandTotal,
+  };
+
+  Order.createOrder(orderData, (err, result) => {
+    if (err) return res.status(500).json({ success: false, error: err.message });
+
+    const order_id = result.insertId;
+
+    items.forEach(item => {
+      const price =
+        item.prodoffer_prize && item.prodoffer_prize < item.prod_price
+          ? item.prodoffer_prize
+          : item.prod_price;
+
+      const total_price = price * item.quantity;
+
+      Order.addOrderItem(order_id, {
+        prod_id: item.prod_id,
+        quantity: item.quantity,
+        color: item.color,
+        price,
+        total_price,
+      }, (err) => {
+        if (err) console.error("Error adding order item:", err);
+      });
+
+      Order.updateProductStock(item.prod_id, item.quantity, (err) => {
+        if (err) console.error("Error updating stock:", err);
+      });
+    });
+
+    Order.clearUserCart(user_id, (err) => {
+      if (err) console.error("Error clearing cart:", err);
+    });
+
+    // ✅ Send email confirmation (non-blocking)
+    sendOrderConfirmation(email, {
+      name,
+      prod_name,
+      order_id,
+      subtotal,
+      shipping_fee: shippingFee,
+      grand_total: grandTotal,
+      items,
+    });
+
+    res.status(200).json({
+      success: true,
+      message: "Order placed successfully and confirmation email sent!",
+      order_id,
+    });
+  });
+};
+
+
+// ✅ Get All Orders for a User
+exports.getUserOrders = (req, res) => {
+  const { user_id } = req.params;
+  Order.getOrdersByUser(user_id, (err, results) => {
+    if (err) return res.status(500).json({ error: "Database error" });
     res.json(results);
   });
 };
 
-// ✅ Update order status
-exports.updateOrderStatus = (req, res) => {
-  const { order_id } = req.params;
-  const { order_status } = req.body;
-
-  const validStatuses = ['Pending', 'Processing', 'Shipped', 'Delivered', 'Cancelled'];
-  if (!validStatuses.includes(order_status)) {
-    return res.status(400).json({ error: "Invalid status value" });
-  }
-
-  Order.updateOrderStatus(order_id, order_status, (err, result) => {
-    if (err) {
-      console.error("Error updating order status:", err);
-      return res.status(500).json({ error: "Internal server error" });
-    }
-
-    if (result.affectedRows === 0) {
-      return res.status(404).json({ error: "Order not found" });
-    }
-
-    res.json({ message: "Order status updated successfully" });
+// ✅ Get Single Order Details for User
+exports.getOrderDetails = (req, res) => {
+  const { order_id, user_id } = req.params;
+  Order.getOrderDetails(order_id, user_id, (err, results) => {
+    if (err) return res.status(500).json({ error: "Database error" });
+    res.json(results);
   });
 };
 
-// For ORder Items 
-exports.OrderItem=(req,res)=>{
-     Order.OrderItem(req, res, (err, results) => {
-        if (err) {
-            console.error("Error fetching order items:", err);
-            return res.status(500).json({ error: "Internal server error" });
-        }
-        res.json(results);
-        console.log(results);
-        
-    });
-}
+// ============================================
+// 🧑‍💼 ADMIN SIDE
+// ============================================
+
+// ✅ Admin: View all orders
+exports.getAllOrders = (req, res) => {
+  Order.getAllOrders((err, results) => {
+    if (err) return res.status(500).json({ error: "Database error" });
+    res.json(results);
+  });
+};
+
+// ✅ Admin: View one order with full details
+exports.getOrderDetailsAdmin = (req, res) => {
+  const { order_id } = req.params;
+  Order.getOrderDetailsAdmin(order_id, (err, results) => {
+    if (err) return res.status(500).json({ error: "Database error" });
+    res.json(results);
+  });
+};
+
+// ✅ Admin: Update order status
+exports.updateOrderStatus = (req, res) => {
+  const { order_id } = req.params;
+  const { status } = req.body;
+
+  Order.updateOrderStatus(order_id, status, (err, result) => {
+    if (err) return res.status(500).json({ error: "Database error" });
+    res.json({ success: true, message: "Order status updated successfully" });
+  });
+};

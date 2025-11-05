@@ -28,12 +28,21 @@ exports.index = (callback) => {
 // Get ALL Products (Admin)
 // =======================
 exports.getAll = (callback) => {
-  const sql = `
-    SELECT * 
-    FROM products
-    INNER JOIN category ON products.cat_id = category.cat_id
-    INNER JOIN badges ON products.badge_id = badges.badge_id
-  `;
+ const sql = `
+  SELECT 
+    products.*,
+    category.cat_name,
+    subcategory.sub_name,
+    items.item_name,
+    badges.badge_name
+  FROM products
+  LEFT JOIN category ON products.cat_id = category.cat_id
+  LEFT JOIN subcategory ON products.sub_id = subcategory.sub_id
+  LEFT JOIN items ON products.item_id = items.item_id
+  LEFT JOIN badges ON products.badge_id = badges.badge_id
+  ORDER BY products.prod_id DESC
+`;
+
   db.query(sql, (err, result) => {
     if (err) return callback(err, null);
     callback(null, result);
@@ -72,13 +81,14 @@ exports.addProduct = (data, callback) => {
       stock_quantity,
       cat_id,
       sub_id,
+      item_id,
       badge_id,
       prod_status,
       prod_color,
       prod_dimensions,
       prod_think
     )
-    VALUES (?, ?, ?, ?, ?,?, ?, ?, ?, ?, ?, ?, ?, ?)
+    VALUES (?, ?, ?, ?, ?,?, ?,?, ?, ?, ?, ?, ?, ?, ?)
   `;
 
   db.query(
@@ -92,7 +102,8 @@ exports.addProduct = (data, callback) => {
       data.prodoffer_prize || null,
       data.stock_quantity || 0,
       data.category_id || null,
-      data.subcategory_id || null,
+      data.sub_id || null,
+      data.item_id || null,
       data.badge_id || null,
       data.prod_status || 1,
       data.prod_color || null,
@@ -121,6 +132,7 @@ exports.updateProductById = (productId, data, callback) => {
       stock_quantity = ?, 
       cat_id = ?, 
       sub_id = ?,
+      item_id = ?,
       badge_id = ?, 
       prod_status = ?,
       prod_color = ?,
@@ -138,7 +150,8 @@ exports.updateProductById = (productId, data, callback) => {
     data.prodoffer_prize || null,
     data.stock_quantity || 0,
     data.cat_id || null,
-    data.sub_id || null,        // ✅ matches frontend
+    data.sub_id || null,
+    data.item_id||null,        // ✅ matches frontend
     data.badge_id || null,
     data.prod_status || 1,
     data.prod_color || null,

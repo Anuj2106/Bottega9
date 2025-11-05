@@ -18,6 +18,8 @@ const ProductCard = ({ products = [] }) => {
     return text.length > maxLength ? text.substring(0, maxLength) + '...' : text;
   };
 
+  
+
   const formatPrice = (price) => {
     return new Intl.NumberFormat('en-US', {
       style: 'currency',

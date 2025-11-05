@@ -21,6 +21,8 @@ export const WishlistProvider = ({ children }) => {
           // If response is [ {prod_id, ...productData} ]
           setWishlist(res.data.map((item) => item.prod_id)); // Only IDs
           setWishlistItems(res.data); // All product data for display
+         
+          
         })
         .catch((err) => console.error("Wishlist fetch error:", err));
     } else {
@@ -28,6 +30,10 @@ export const WishlistProvider = ({ children }) => {
       setWishlist([]);
       setWishlistItems([]);
     }
+    console.log(isAuthenticated);
+    
+   
+    
   }, [userId, isAuthenticated]);
 
   // Toggle wishlist

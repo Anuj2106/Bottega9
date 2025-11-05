@@ -1,10 +1,15 @@
-// routes/categoryRoutes.js
 const express = require('express');
 const router = express.Router();
 const orderController = require('../controllers/orderController');
 
-router.get('/orders', orderController.getAllOrders);
-router.get('/order-item',orderController.OrderItem);
-router.put('/orders/:order_id/status', orderController.updateOrderStatus);
+// ✅ User Routes
+router.post('/place', orderController.placeOrder);
+router.get('/user/:user_id', orderController.getUserOrders);
+router.get('/details/:order_id/:user_id', orderController.getOrderDetails);
+
+// ✅ Admin Routes
+router.get('/admin/all', orderController.getAllOrders);
+router.get('/admin/details/:order_id', orderController.getOrderDetailsAdmin);
+router.put('/admin/update-status/:order_id', orderController.updateOrderStatus);
 
 module.exports = router;

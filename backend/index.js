@@ -58,7 +58,8 @@ const subCategory=require('./routes/subcategoryRoute');
 app.use('/api',subCategory);
 const shop=require('./routes/shopRoute');
 app.use('/api/shop',shop);
-
+const order=require('./routes/orderRoute');
+app.use('/api/order',order);
  
 const orderRoute=require('./routes/orderRoute');
 app.use('/api',orderRoute);

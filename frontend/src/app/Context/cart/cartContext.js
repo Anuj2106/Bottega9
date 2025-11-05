@@ -10,7 +10,6 @@ export const CartProvider = ({ children }) => {
   const { isAuthenticated, userId } = useAuth();
   const apiUrl = process.env.NEXT_PUBLIC_BACKEND_LINK;
 
-
   // ✅ Fetch cart on mount or when userId changes
   useEffect(() => {
     if (isAuthenticated && userId) {
@@ -30,8 +29,8 @@ export const CartProvider = ({ children }) => {
     }
   };
 
-  // ✅ Add to cart
-  const addToCart = async (prodId) => {
+  // ✅ Add to cart (supports color)
+  const addToCart = async (prodId, extra = {}) => {
     if (!isAuthenticated || !userId) {
       alert('Please login to continue');
       return;
@@ -41,7 +40,9 @@ export const CartProvider = ({ children }) => {
       await axios.post(`${apiUrl}/api/cart/add`, {
         user_id: userId,
         prod_id: prodId,
+        color: extra.color || null, // ✅ send selected color (if any)
       });
+
       fetchCart();
     } catch (error) {
       console.error('Error adding to cart:', error);
@@ -73,7 +74,6 @@ export const CartProvider = ({ children }) => {
     try {
       await axios.put(`${apiUrl}/api/cart/update`, {
         user_id: userId,
-        
         prod_id: prodId,
         quantity: newQty,
       });
