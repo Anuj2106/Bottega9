@@ -2,13 +2,17 @@
 import { useCart } from "@/app/Context/cart/cartContext";
 import Image from "next/image";
 import "../Css/cart.css";
+import { useEffect } from "react";
 
 const api = process.env.NEXT_PUBLIC_BACKEND_LINK;
 
 const CartPage = () => {
-  const { cart, updateQuantity, removeFromCart, clearCart } = useCart();
-
- // Calculate subtotal
+  const {fetchCart, cart, updateQuantity, removeFromCart, clearCart } = useCart();
+  useEffect(() => {
+    fetchCart();
+  }, []);
+  
+  // Calculate subtotal
   const subtotal = cart.reduce((sum, item) => {
     const price =
       item.prodoffer_prize && item.prodoffer_prize < item.prod_price

@@ -81,6 +81,8 @@ app.use('/api/banner', bannerRoute);
 
 // Inside app.use() section
 app.use("/api/items", itemsRoutes);
+  const contactRoutes = require('./routes/ContactRoute');
+  app.use('/api', contactRoutes);
 
 
 

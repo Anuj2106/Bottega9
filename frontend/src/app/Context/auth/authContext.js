@@ -5,51 +5,46 @@ import { useRouter } from "next/navigation";
 
 const apiUrl = process.env.NEXT_PUBLIC_BACKEND_LINK;
 const AuthContext = createContext();
+
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
+  const [userId, SetuserId] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [userId,SetuserId]=useState(null);
   const router = useRouter();
 
   const loginUser = async (email, password) => {
-   
     try {
-      const response = await axios.post(`${apiUrl}/api/login`, { 
-        user_email:email,
-         user_pass:password
-         }, { withCredentials: true });
-
-      const userData = response.data.user; // assuming backend sends { user: { id, name, role_id, ... } }
+      const response = await axios.post(
+        `${apiUrl}/api/login`,
+        { user_email: email, user_pass: password },
+        { withCredentials: true }
+      );
+      const userData = response.data.user;
 
       setUser(userData);
-
+      SetuserId(userData.user_id); // ✅ important
       setIsAuthenticated(true);
 
-      // ✅ Redirect based on role_id
       if (userData.role_id === 3) {
-        router.push("/");
+        router.push("/"); // regular user
       } else {
-        router.push("/dashboard");
-     
+        router.push("/dashboard"); // admin or other roles
+        // ✅ reload dashboard once
       }
-
     } catch (error) {
       console.error("Login error:", error.response?.data?.message || error.message);
       alert("Invalid email or password");
     }
   };
 
-
-  
-
   const logout = async () => {
     try {
       await axios.post(`${apiUrl}/api/logout`, {}, { withCredentials: true });
       setUser(null);
+      SetuserId(null);
       setIsAuthenticated(false);
       router.push("/");
-      window.location.reload();
     } catch (error) {
       console.error("Logout error:", error);
     }
@@ -59,10 +54,11 @@ export const AuthProvider = ({ children }) => {
     try {
       const res = await axios.get(`${apiUrl}/api/checksession`, { withCredentials: true });
       setUser(res.data.user);
-        SetuserId(res.data.user.user_id);
+      SetuserId(res.data.user.user_id);
       setIsAuthenticated(true);
     } catch (err) {
       setUser(null);
+      SetuserId(null);
       setIsAuthenticated(false);
     } finally {
       setLoading(false);

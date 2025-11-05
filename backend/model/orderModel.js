@@ -79,12 +79,7 @@ const Order = {
   // ✅ Admin: Get All Orders (with user info)
   getAllOrders: (callback) => {
     const sql = `
-      SELECT 
-        o.order_id, o.user_id, u.name AS user_name, u.email AS user_email,
-        o.subtotal, o.shipping_fee, o.grand_total, o.order_status, o.created_at
-      FROM orders o
-      LEFT JOIN user u ON o.user_id = u.user_id
-      ORDER BY o.created_at DESC
+      SELECT o.order_id, o.user_id, o.name , o.contact,o.address,o.city,o.state,o.zip, o.email , o.subtotal, o.shipping_fee, o.grand_total, o.order_status, o.created_at FROM orders o LEFT JOIN user u ON o.user_id = u.user_id ORDER BY o.created_at DESC;
     `;
     db.query(sql, callback);
   },

@@ -37,14 +37,18 @@ exports.removeFromCart = (req, res) => {
 exports.clearCart = (req, res) => {
   const { user_id } = req.params;
 
-  const sql = `DELETE FROM cart WHERE user_id = ?`;
+  if (!user_id) {
+    console.error("❌ Missing user_id in request params");
+    return res.status(400).json({ error: "Missing user_id" });
+  }
 
-  db.query(sql, [user_id], (err, result) => {
+  Cart.clearCart(user_id, (err) => {
     if (err) {
-      console.error("❌ Error clearing cart:", err);
-      return res.status(500).json({ error: "Error clearing cart" });
+      console.error("❌ Error clearing cart for user_id:", user_id, err);
+      return res.status(500).json({ error: "Database error" });
     }
-
-    res.status(200).json({ message: "✅ Cart cleared successfully" });
+    console.log("✅ Cart cleared for user_id:", user_id);
+    res.json({ message: "Cart cleared successfully" });
   });
 };
+

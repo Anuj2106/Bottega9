@@ -4,7 +4,7 @@ const lookbookUpload = require('../middleware/lookbookUpload');
 const lookbookController = require('../controllers/lookBookController');
 
 // Upload Lookbook PDF
-router.get('/', lookbookController.getLookbooks);
+router.get('/all', lookbookController.getLookbooks);
 router.post('/upload', lookbookUpload, lookbookController.uploadLookbook);
 router.delete('/delete/:id', lookbookController.deleteLookbook); // Assuming you have a delete function
 

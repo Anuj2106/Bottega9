@@ -44,3 +44,8 @@ exports.removeFromCart = (user_id, prod_id, callback) => {
   const sql = `DELETE FROM cart WHERE user_id = ? AND prod_id = ?`;
   db.query(sql, [user_id, prod_id], callback);
 };
+exports.clearCart = (user_id, callback) => {
+  const sql = `DELETE FROM cart WHERE user_id = ?`;
+
+  db.query(sql, [user_id], callback);
+};

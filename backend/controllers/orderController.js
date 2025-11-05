@@ -95,10 +95,11 @@ exports.getOrderDetails = (req, res) => {
 // ✅ Admin: View all orders
 exports.getAllOrders = (req, res) => {
   Order.getAllOrders((err, results) => {
-    if (err) return res.status(500).json({ error: "Database error" });
-    res.json(results);
+    if (err) return res.status(500).json({ error: err.message || "Database error" });
+    res.json({ orders: results });
   });
 };
+
 
 // ✅ Admin: View one order with full details
 exports.getOrderDetailsAdmin = (req, res) => {
